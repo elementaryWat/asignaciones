@@ -1,0 +1,8 @@
+{
+  "name": "asignaciones",
+  "app_id": "ffa40d08",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
