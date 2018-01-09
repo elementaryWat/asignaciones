@@ -8,6 +8,7 @@ import { NuevaSemanaPage } from '../pages/nueva-semana/nueva-semana';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
 import { ContactPage } from '../pages/contact/contact';
 import { TabsPage } from '../pages/tabs/tabs';
+import {SemanaPage} from '../pages/semana/semana';
 
 //Firestore
 import { AngularFireModule } from 'angularfire2';
@@ -36,6 +37,7 @@ const environment = {
     MyApp,
     ProgramaSemanalPage,
     NuevaSemanaPage,
+    SemanaPage,
     AboutPage,
     ContactPage,
     TabsPage,
@@ -52,6 +54,7 @@ const environment = {
     MyApp,
     ProgramaSemanalPage,
     NuevaSemanaPage,
+    SemanaPage,
     AboutPage,
     ContactPage,
     TabsPage
