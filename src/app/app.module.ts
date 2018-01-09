@@ -4,37 +4,63 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
+import { NuevaSemanaPage } from '../pages/nueva-semana/nueva-semana';
+import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
 import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
+//Firestore
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
+//Pipes
+import {FechaPipe} from '../pipes/fecha/fecha';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FirestoreProvider } from '../providers/firestore/firestore';
+
+const environment = {
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyCSSk4g1RoBaKoZh0Sl15kJ9dtMMnN-8CE",
+    authDomain: "programareuniones-96142.firebaseapp.com",
+    databaseURL: "https://programareuniones-96142.firebaseio.com",
+    projectId: "programareuniones-96142",
+    storageBucket: "programareuniones-96142.appspot.com",
+    messagingSenderId: "168788241633"
+  }
+};
 
 @NgModule({
   declarations: [
     MyApp,
+    ProgramaSemanalPage,
+    NuevaSemanaPage,
     AboutPage,
     ContactPage,
-    HomePage,
-    TabsPage
+    TabsPage,
+    FechaPipe
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    ProgramaSemanalPage,
+    NuevaSemanaPage,
     AboutPage,
     ContactPage,
-    HomePage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FirestoreProvider
   ]
 })
 export class AppModule {}
