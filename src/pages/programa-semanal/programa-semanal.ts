@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
 import 'moment/locale/es';
 import {Semana} from '../../app/interfaces/semana.interface';
+import {SemanaPage} from '../semana/semana';
 /**
  * Generated class for the ProgramaSemanalPage page.
  *
@@ -33,9 +34,9 @@ export class ProgramaSemanalPage {
                 this.definirFechaInicial();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProgramaSemanalPage');
-  }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad ProgramaSemanalPage');
+  // }
   definirFechaInicial(){
     this.primerLunes=this.fechaLimInf;
     this.firestoreService.obtenerUltimaSemana(this.primerLunes)
@@ -52,7 +53,10 @@ export class ProgramaSemanalPage {
       let modal = this.modalCtrl.create(NuevaSemanaPage,{fechaDesde:this.primerLunes});
       modal.present();
     }
-    irASemana(){
-      
+    irASemana(fechaDesde:string, fechaHasta:string){
+      this.navCtrl.push(SemanaPage,{
+        fechaDesde:fechaDesde,
+        fechaHasta:fechaHasta
+      });
     }
   }

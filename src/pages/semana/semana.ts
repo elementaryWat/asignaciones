@@ -14,8 +14,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'semana.html',
 })
 export class SemanaPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private fechaDesde:string;
+  private fechaHasta:string;
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams) {
+                this.fechaDesde=navParams.get('fechaDesde');
+                this.fechaHasta=navParams.get('fechaHasta');
+                console.log('Desde '+this.fechaDesde+' hasta '+this.fechaHasta);
   }
 
   ionViewDidLoad() {
