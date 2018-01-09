@@ -49,17 +49,26 @@ export class NuevaSemanaPage {
   }
   agregarSemana(context:any){
     if(moment(this.myDate).day()==1){
-      this.firestoreService.agregarSemana(this.myDate, this.hastaFecha)
-                                          .then(function(docRef) {
-                                              // console.log("Documento escrito con ID: ", docRef.id);
-                                              context.presentToast("Se ha agregado la semana de manera exitosa");
-                                              context.dismiss();
+      let suscripcion=this.firestoreService.existeSemana(this.myDate)
+                           .subscribe(data=>{
+                                      if (data.length==0){
+                                        this.firestoreService.agregarSemana(this.myDate, this.hastaFecha)
+                                                                            .then(function(docRef) {
+                                                                                // console.log("Documento escrito con ID: ", docRef.id);
+                                                                                context.presentToast("Se ha agregado la semana de manera exitosa");
+                                                                                context.dismiss();
 
-                                          })
-                                          .catch(function(error) {
-                                              // console.error("Error añadiendo documento: ", error);
-                                              context.presentToast("Hubo un error");
-                                          });
+                                                                            })
+                                                                            .catch(function(error) {
+                                                                                // console.error("Error añadiendo documento: ", error);
+                                                                                context.presentToast("Hubo un error");
+                                                                          });
+                                      }else{
+                                        context.presentToast("Ya existe esta semana");
+                                      }
+                           });
+        //Evita que la semana se agregue sola
+        suscripcion.unsubscribe();
     }else{
       this.presentToast("La semana debe empezar un lunes");
     }
