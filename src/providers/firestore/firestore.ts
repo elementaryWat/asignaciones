@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs/Observable';
 
 /*
   Generated class for the FirestoreProvider provider.
@@ -15,15 +15,17 @@ export class FirestoreProvider {
     //console.log('Hello FirestoreProvider Provider');
 
   }
-  obtenerSemanas(){
-    return this.firestoredb.collection('semanas', ref => ref.orderBy('desde')).valueChanges();
+  obtenerSemanas(fechaInicial):Observable<any>{
+    return this.firestoredb.collection('semanas', ref => ref.where('desde','>=',fechaInicial)
+                                                            .orderBy('desde'))
+                            .valueChanges();
   }
-  obtenerUltimaSemana(primerLunes:string){
+  obtenerUltimaSemana(primerLunes:string):Observable<any>{
     return this.firestoredb.collection('semanas', ref =>
                                                   ref.where('desde','>=',primerLunes)
                                                      .orderBy('desde','desc')
                                                      .limit(1))
-                                      .valueChanges();
+                            .valueChanges();
   }
   agregarSemana(desde:string, hasta:string):Promise<any>{
     return this.firestoredb.collection("semanas").add({
@@ -31,14 +33,10 @@ export class FirestoreProvider {
           hasta: hasta
       });
   }
-  existeSemana(fecha:string):Subscription{
+  existeSemana(fecha:string):Observable<any>{
     return this.firestoredb.collection("semanas",ref=>
                                                       ref.where('desde','==',fecha))
-                                      .valueChanges()
-                                      .subscribe(data=>
-                                                {
-                                                  return data.length;
-                                                });
+                                      .valueChanges();
   }
 
 }
