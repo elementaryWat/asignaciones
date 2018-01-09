@@ -20,12 +20,12 @@
 <ion-content padding>
   <ion-item>
     <ion-label>Desde</ion-label>
-    <ion-datetime (ionChange)="actualizarFecHasta()" displayFormat="DD/MM/YYYY" [min]="primerLunes" [max]="fechaMaxima" [(ngModel)]="myDate">
+    <ion-datetime doneText="Listo" cancelText="Cancelar" (ionChange)="actualizarFecHasta()" displayFormat="DD/MM/YYYY" [min]="primerLunes" [max]="fechaMaxima" [(ngModel)]="myDate">
     </ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Hasta:</ion-label>
-    <ion-datetime doneText="Listo" cancelText="Cancelar" displayFormat="DD/MM/YYYY" disabled [(ngModel)]="hastaFecha">
+    <ion-datetime displayFormat="DD/MM/YYYY" disabled [(ngModel)]="hastaFecha">
     </ion-datetime>
   </ion-item>
   <button type="button" ion-button block outline (click)="agregarSemana(this)">Agregar semana</button>
