@@ -22,12 +22,14 @@ import {Semana} from '../../app/interfaces/semana.interface';
 })
 export class ProgramaSemanalPage {
   semanas: Observable<any[]>;
+  fechaLimInf:string;
   primerLunes:string;
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private modalCtrl:ModalController,
               private firestoreService: FirestoreProvider) {
-                this.semanas=firestoreService.obtenerSemanas();
+                this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
+                this.semanas=firestoreService.obtenerSemanas(this.fechaLimInf);
                 this.definirFechaInicial();
   }
 
@@ -35,7 +37,7 @@ export class ProgramaSemanalPage {
     console.log('ionViewDidLoad ProgramaSemanalPage');
   }
   definirFechaInicial(){
-    this.primerLunes=moment().day(1).format("YYYY-MM-DD");
+    this.primerLunes=this.fechaLimInf;
     this.firestoreService.obtenerUltimaSemana(this.primerLunes)
                                       .subscribe(data =>{
                                         if (data.length!=0){
@@ -49,5 +51,8 @@ export class ProgramaSemanalPage {
       let fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
       let modal = this.modalCtrl.create(NuevaSemanaPage,{fechaDesde:this.primerLunes});
       modal.present();
+    }
+    irASemana(){
+      
     }
   }
