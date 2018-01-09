@@ -5,11 +5,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngFor="let semana of semanas | async">
-    <ion-item-sliding>
-      <ion-item>
-        <h2>{{ semana.desde | fecha:semana.hasta}}</h2>
-      </ion-item>
+  <ion-list>
+    <ion-item-sliding *ngFor="let semana of semanas | async">
+      <button ion-item (click)="irASemana()">{{ semana.desde | fecha:semana.hasta}}</button>
       <ion-item-options side="right">
         <button ion-button color="danger">
           <ion-icon name="trash"></ion-icon>
