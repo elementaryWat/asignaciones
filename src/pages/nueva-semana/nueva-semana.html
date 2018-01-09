@@ -25,7 +25,7 @@
   </ion-item>
   <ion-item>
     <ion-label>Hasta:</ion-label>
-    <ion-datetime displayFormat="DD/MM/YYYY" disabled [(ngModel)]="hastaFecha">
+    <ion-datetime doneText="Listo" cancelText="Cancelar" displayFormat="DD/MM/YYYY" disabled [(ngModel)]="hastaFecha">
     </ion-datetime>
   </ion-item>
   <button type="button" ion-button block outline (click)="agregarSemana(this)">Agregar semana</button>
