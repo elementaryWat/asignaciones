@@ -66,9 +66,9 @@ export class NuevaSemanaPage {
                                       }else{
                                         context.presentToast("Ya existe esta semana");
                                       }
+                                      //Evita que la semana se agregue sola
+                                      suscripcion.unsubscribe();
                            });
-        //Evita que la semana se agregue sola
-        suscripcion.unsubscribe();
     }else{
       this.presentToast("La semana debe empezar un lunes");
     }
