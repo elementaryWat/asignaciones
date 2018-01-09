@@ -23,8 +23,8 @@ export class SemanaPage {
                 console.log('Desde '+this.fechaDesde+' hasta '+this.fechaHasta);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SemanaPage');
-  }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad SemanaPage');
+  // }
 
 }
