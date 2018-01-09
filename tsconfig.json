@@ -19,6 +19,9 @@
   "include": [
     "src/**/*.ts"
   ],
+  "files": [
+   "node_modules/angularfire2/firebase3.d.ts"
+ ],
   "exclude": [
     "node_modules",
     "src/**/*.spec.ts",
