@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage, ModalController } from 'ionic-angular';
+import {NuevaFamiliaPage} from './nueva-familia/nueva-familia';
 /**
  * Generated class for the MatriculadosPage page.
  *
@@ -15,11 +15,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MatriculadosPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public modalCtrl:ModalController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MatriculadosPage');
-  }
-
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad MatriculadosPage');
+  // }
+  presentModalFamily() {
+      let modal = this.modalCtrl.create(NuevaFamiliaPage);
+      modal.present();
+    }
 }

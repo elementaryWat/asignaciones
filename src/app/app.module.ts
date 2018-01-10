@@ -3,12 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
+//Pages
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
+  import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
+  import {SemanaPage} from '../pages/programa-semanal/semana/semana';
 import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
 import { MatriculadosPage } from '../pages/matriculados/matriculados';
+  import {NuevaFamiliaPage} from '../pages/matriculados/nueva-familia/nueva-familia';
+
 import { TabsPage } from '../pages/tabs/tabs';
-import {SemanaPage} from '../pages/programa-semanal/semana/semana';
 
 //Firestore
 import { AngularFireModule } from 'angularfire2';
@@ -36,10 +39,11 @@ const environment = {
   declarations: [
     MyApp,
     ProgramaSemanalPage,
-    NuevaSemanaPage,
-    SemanaPage,
+      NuevaSemanaPage,
+      SemanaPage,
     MisAsignacionesPage,
     MatriculadosPage,
+      NuevaFamiliaPage,
     TabsPage,
     FechaPipe
   ],
@@ -59,10 +63,11 @@ const environment = {
   entryComponents: [
     MyApp,
     ProgramaSemanalPage,
-    NuevaSemanaPage,
-    SemanaPage,
+      NuevaSemanaPage,
+      SemanaPage,
     MisAsignacionesPage,
     MatriculadosPage,
+      NuevaFamiliaPage,
     TabsPage
   ],
   providers: [

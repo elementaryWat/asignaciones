@@ -4,7 +4,7 @@ import { IonicPage,
           NavParams,
           ViewController,
           ToastController} from 'ionic-angular';
-import {FirestoreProvider} from '../../providers/firestore/firestore';
+import {FirestoreProvider} from '../../../providers/firestore/firestore';
 import * as moment from 'moment';
 import 'moment/locale/es';
 
