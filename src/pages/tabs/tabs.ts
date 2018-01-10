@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 import { ProgramaSemanalPage } from '../programa-semanal/programa-semanal';
-import { ContactPage } from '../contact/contact';
-import { AboutPage } from '../about/about';
+import { MisAsignacionesPage } from '../mis-asignaciones/mis-asignaciones';
+import { MatriculadosPage } from '../matriculados/matriculados';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -10,8 +10,8 @@ import { AboutPage } from '../about/about';
 export class TabsPage {
 
   tab1Root = ProgramaSemanalPage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tab2Root = MatriculadosPage;
+  tab3Root = MisAsignacionesPage;
 
   constructor() {
 

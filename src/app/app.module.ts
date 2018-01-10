@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
 import { NuevaSemanaPage } from '../pages/nueva-semana/nueva-semana';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
-import { ContactPage } from '../pages/contact/contact';
+import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
+import { MatriculadosPage } from '../pages/matriculados/matriculados';
 import { TabsPage } from '../pages/tabs/tabs';
 import {SemanaPage} from '../pages/semana/semana';
 
@@ -38,14 +38,20 @@ const environment = {
     ProgramaSemanalPage,
     NuevaSemanaPage,
     SemanaPage,
-    AboutPage,
-    ContactPage,
+    MisAsignacionesPage,
+    MatriculadosPage,
     TabsPage,
     FechaPipe
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+     backButtonText: 'VOLVER',
+     modalEnter: 'modal-slide-in',
+     modalLeave: 'modal-slide-out',
+     tabsPlacement: 'bottom'
+   }
+ ),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
@@ -55,8 +61,8 @@ const environment = {
     ProgramaSemanalPage,
     NuevaSemanaPage,
     SemanaPage,
-    AboutPage,
-    ContactPage,
+    MisAsignacionesPage,
+    MatriculadosPage,
     TabsPage
   ],
   providers: [
