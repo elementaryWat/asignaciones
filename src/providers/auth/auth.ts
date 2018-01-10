@@ -16,7 +16,7 @@ export class AuthProvider {
   estadoLogged:BehaviorSubject<any>;
   constructor(private firestoredb:AngularFirestore) {
     // console.log('Hello AuthProvider Provider');
-    this.estadoLogged.next(false);
+    this.estadoLogged=new BehaviorSubject(false);
   }
   public login(credenciales:Credencial):Observable<any> {
     if (credenciales.email === null || credenciales.password === null) {
