@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { NuevaSemanaPage } from '../pages/nueva-semana/nueva-semana';
+import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
 import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
 import { MatriculadosPage } from '../pages/matriculados/matriculados';
 import { TabsPage } from '../pages/tabs/tabs';
-import {SemanaPage} from '../pages/semana/semana';
+import {SemanaPage} from '../pages/programa-semanal/semana/semana';
 
 //Firestore
 import { AngularFireModule } from 'angularfire2';

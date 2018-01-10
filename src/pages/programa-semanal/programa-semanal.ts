@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams  } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
-import { NuevaSemanaPage } from '../nueva-semana/nueva-semana';
+import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
 import { FirestoreProvider } from '../../providers/firestore/firestore';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
 import 'moment/locale/es';
 import {Semana} from '../../app/interfaces/semana.interface';
-import {SemanaPage} from '../semana/semana';
+import {SemanaPage} from './semana/semana';
 /**
  * Generated class for the ProgramaSemanalPage page.
  *
