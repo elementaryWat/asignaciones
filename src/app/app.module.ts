@@ -24,6 +24,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FirestoreProvider } from '../providers/firestore/firestore';
 import { FirestoreHermanosProvider } from '../providers/firestore-hermanos/firestore-hermanos';
+import { AuthProvider } from '../providers/auth/auth';
 
 const environment = {
   production: false,
@@ -79,7 +80,8 @@ const environment = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FirestoreProvider,
-    FirestoreHermanosProvider
+    FirestoreHermanosProvider,
+    AuthProvider
   ]
 })
 export class AppModule {}
