@@ -77,9 +77,6 @@ export class NuevaSemanaPage {
   dismiss() {
    this.viewCtrl.dismiss();
  }
- configurar(primerLunes:string){
-
- }
  presentToast(mensaje:string) {
   let toast = this.toastCtrl.create({
       message: mensaje,
