@@ -10,6 +10,7 @@ import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal'
 import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
 import { MatriculadosPage } from '../pages/matriculados/matriculados';
   import {NuevaFamiliaPage} from '../pages/matriculados/nueva-familia/nueva-familia';
+  import {NuevoHermanoPage} from '../pages/matriculados/nuevo-hermano/nuevo-hermano';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -22,6 +23,7 @@ import {FechaPipe} from '../pipes/fecha/fecha';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FirestoreProvider } from '../providers/firestore/firestore';
+import { FirestoreHermanosProvider } from '../providers/firestore-hermanos/firestore-hermanos';
 
 const environment = {
   production: false,
@@ -44,13 +46,14 @@ const environment = {
     MisAsignacionesPage,
     MatriculadosPage,
       NuevaFamiliaPage,
+      NuevoHermanoPage,
     TabsPage,
     FechaPipe
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {
-     backButtonText: 'VOLVER',
+     backButtonText: '',
      modalEnter: 'modal-slide-in',
      modalLeave: 'modal-slide-out',
      tabsPlacement: 'bottom'
@@ -68,13 +71,15 @@ const environment = {
     MisAsignacionesPage,
     MatriculadosPage,
       NuevaFamiliaPage,
+      NuevoHermanoPage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FirestoreProvider
+    FirestoreProvider,
+    FirestoreHermanosProvider
   ]
 })
 export class AppModule {}
