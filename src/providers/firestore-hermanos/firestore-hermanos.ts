@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
+import {Observable} from 'rxjs/Observable';
 
 /*
   Generated class for the FirestoreHermanosProvider provider.
@@ -10,8 +11,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class FirestoreHermanosProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello FirestoreHermanosProvider Provider');
+  constructor(private firestoredb:AngularFirestore) {
+
   }
 
 }
