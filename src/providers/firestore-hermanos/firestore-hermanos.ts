@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
-
+import {AuthProvider} from '../auth/auth';
+import {Familia} from '../../app/clases/Familia.class';
 /*
   Generated class for the FirestoreHermanosProvider provider.
 
@@ -11,8 +12,20 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class FirestoreHermanosProvider {
 
-  constructor(private firestoredb:AngularFirestore) {
-
+  constructor(private firestoredb:AngularFirestore,
+              private authProvider:AuthProvider) {
   }
-
+  obtenerFamilias(){
+    return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                            .orderBy('apellido'))
+                            .valueChanges();
+  }
+  verificarExistencia(familia:Familia){
+    return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',familia.congregacion)
+                                                               .where('apellido','==',familia.apellido))
+                            .valueChanges();
+  }
+  agregarFamilia(familia:Familia){
+    return this.firestoredb.collection<Familia>('familias').add(familia);
+  }
 }

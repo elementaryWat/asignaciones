@@ -19,9 +19,28 @@
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label floating>Apellido</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <button ion-button round block>Agregar</button>
+  <form #formNewFamily="ngForm" (ngSubmit)="agregarFamilia(formNewFamily,this)">
+    <ion-item>
+      <ion-label floating>Apellido</ion-label>
+      <ion-input [(ngModel)]="familia.apellido"
+       required
+       name="apellido"
+       type="text"></ion-input>
+    </ion-item>
+    <button [disabled]="formNewFamily.invalid"
+     ion-button round block type="submit">Agregar</button>
+  </form>
+  <br>
+  <button (click)="showFamilias=!showFamilias"
+    ion-button round outline block color="secondary" icon-left>
+    <ion-icon name="ios-arrow-down" *ngIf="!showFamilias"></ion-icon>
+    <ion-icon name="ios-arrow-up" *ngIf="showFamilias"></ion-icon>
+    Familias actuales
+    <ion-badge item-end>{{familias.length}}</ion-badge>
+  </button>
+  <ion-list *ngIf="showFamilias && familias.length>0">
+    <ion-item *ngFor="let familia of familias">
+      <h2>{{familia.apellido}}</h2>
+    </ion-item>
+  </ion-list>
 </ion-content>
