@@ -19,13 +19,10 @@ export class AuthProvider {
     this.estadoLogged=new BehaviorSubject(false);
   }
   public login(credenciales:Credencial):Observable<any> {
-    if (credenciales.email === null || credenciales.password === null) {
-      return Observable.throw("Ingrese sus credenciales!");
-    } else {
-      return this.firestoredb.collection('usuarios', ref => ref.where('email','==',credenciales.email)
-                                                               .where('password','==',credenciales.password))
-                              .valueChanges();
-    }
+    const userColection = this.firestoredb.collection<Usuario>('usuarios');
+    return this.firestoredb.collection('usuarios', ref => ref.where('email','==',credenciales.email)
+                                                             .where('contraseña','==',credenciales.password))
+                            .valueChanges();
   }
 
 }
