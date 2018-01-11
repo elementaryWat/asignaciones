@@ -14,18 +14,31 @@
 
 
 <ion-content padding>
-  <ion-list>
-
-    <ion-item>
+  <form (ngSubmit)="login(formLogin)" #formLogin="ngForm">
+    <ion-item class="form-group row"
+              [ngClass]="{'has-danger': email.invalid && email.touched, 'has-success':email.valid && email.touched}">
       <ion-label floating>Email</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input
+       type="text"
+       #email="ngModel"
+       name="email"
+       [(ngModel)]="credenciales.email"
+       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+       required></ion-input>
+
     </ion-item>
 
-    <ion-item>
+    <ion-item class="form-group row"
+              [ngClass]="{'has-danger': password.invalid && password.touched, 'has-success':password.valid && password.touched}">
       <ion-label floating>Contraseña</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-input
+       type="password"
+       #password="ngModel"
+       name="password"
+       [(ngModel)]="credenciales.password"
+       required></ion-input>
     </ion-item>
-
-  </ion-list>
-  <button ion-button block>Ingresar</button>
+    <br>
+    <button ion-button block type="submit">Ingresar</button>
+  </form>
 </ion-content>

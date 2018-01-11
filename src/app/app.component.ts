@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import {LoginPage} from '../pages/login/login';
 import {AuthProvider} from '../providers/auth/auth';
 
 @Component({
@@ -11,7 +12,7 @@ import {AuthProvider} from '../providers/auth/auth';
 })
 export class MyApp {
   rootPage:any = TabsPage;
-  estadoLogged:boolean;
+  rootPage:any;
   constructor(platform: Platform,
               statusBar: StatusBar,
               splashScreen: SplashScreen,
@@ -21,7 +22,14 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      authProvider.estadoLogged.subscribe(estado=>this.estadoLogged=estado);
+      authProvider.estadoLogged.subscribe(estado=>{
+                                              console.log(estado);
+                                              if(estado){
+                                                this.rootPage=TabsPage
+                                              }else{
+                                                this.rootPage=LoginPage
+                                              }
+                                          });
     });
   }
 }

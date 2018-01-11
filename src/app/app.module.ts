@@ -2,8 +2,10 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 //Pages
+import {LoginPage} from '../pages/login/login';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
   import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
   import {SemanaPage} from '../pages/programa-semanal/semana/semana';
@@ -41,6 +43,7 @@ const environment = {
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
     ProgramaSemanalPage,
       NuevaSemanaPage,
       SemanaPage,
@@ -53,6 +56,8 @@ const environment = {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(MyApp, {
      backButtonText: '',
      modalEnter: 'modal-slide-in',
@@ -66,6 +71,7 @@ const environment = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     ProgramaSemanalPage,
       NuevaSemanaPage,
       SemanaPage,

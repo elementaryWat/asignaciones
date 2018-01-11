@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage } from 'ionic-angular';
+import {AuthProvider} from '../../providers/auth/auth';
+import {Credencial} from '../../app/interfaces/credencial.interface';
+import {NgForm} from '@angular/forms';
 /**
  * Generated class for the LoginPage page.
  *
@@ -14,12 +16,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  credenciales:Credencial={
+    email:"",
+    password:""
+  }
+  constructor(private authProvider:AuthProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad LoginPage');
+  // }
+  login(loginForm:NgForm){
+    console.log(loginForm);
   }
-
 }
