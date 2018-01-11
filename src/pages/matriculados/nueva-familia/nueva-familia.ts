@@ -9,7 +9,7 @@ import { IonicPage,
 import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {AuthProvider} from '../../../providers/auth/auth';
 import {Observable} from 'rxjs/Observable';
-import {Familia} from '../../../app/interfaces/Familia.interface';
+import {Familia} from '../../../app/interfaces/familia.interface';
 /**
  * Generated class for the NuevaFamiliaPage page.
  *
