@@ -9,7 +9,7 @@ import { IonicPage,
 import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {AuthProvider} from '../../../providers/auth/auth';
 import {Observable} from 'rxjs/Observable';
-import {Familia} from '../../../app/clases/Familia.class';
+import {Familia} from '../../../app/interfaces/Familia.interface';
 /**
  * Generated class for the NuevaFamiliaPage page.
  *
@@ -35,7 +35,10 @@ export class NuevaFamiliaPage {
         this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
         });
-        this.familia=new Familia('',this.authProvider.currentUser.congregacion);
+        this.familia={
+          apellido:'',
+          congregacion:this.authProvider.currentUser.congregacion
+        };
   }
 
   // ionViewDidLoad() {
@@ -46,15 +49,15 @@ export class NuevaFamiliaPage {
  }
  agregarFamilia(formNewFamily:NgForm,context:NuevaFamiliaPage){
    //console.log(formNewFamily);
-   this.firestoreHProvider.verificarExistencia(this.familia).subscribe(familias=>{
+   let suscripcionAddF=this.firestoreHProvider.verificarExistencia(this.familia).subscribe(familias=>{
         if(familias.length==0){
           this.firestoreHProvider.agregarFamilia(this.familia).then(()=>{
             context.presentToast("Se agrego la familia de manera exitosa");
-            setTimeout(context.dismiss(),3000);
           });
         }else{
           context.presentToast("Ya existe una familia con este apellido. Para evitar conflictos agregue al apellido la/s primera/s letras/s del nombre de un integrante");
         }
+        suscripcionAddF.unsubscribe();
    });
  }
  presentToast(mensaje:string) {

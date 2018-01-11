@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import {AuthProvider} from '../auth/auth';
-import {Familia} from '../../app/clases/Familia.class';
+import {Familia} from '../../app/interfaces/Familia.interface';
 /*
   Generated class for the FirestoreHermanosProvider provider.
 
