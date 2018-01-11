@@ -3,7 +3,8 @@ import { IonicPage,
           NavController,
           NavParams,
           ViewController,
-          ToastController} from 'ionic-angular';
+          ToastController,
+          Toast} from 'ionic-angular';
 import {FirestoreProvider} from '../../../providers/firestore/firestore';
 import * as moment from 'moment';
 import 'moment/locale/es';
@@ -25,7 +26,7 @@ export class NuevaSemanaPage {
   hastaFecha:string;
   primerLunes:string;
   fechaMaxima:string;
-
+  toast:Toast;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -78,13 +79,15 @@ export class NuevaSemanaPage {
    this.viewCtrl.dismiss();
  }
  presentToast(mensaje:string) {
-  let toast = this.toastCtrl.create({
-      message: mensaje,
-      position: 'bottom',
-      showCloseButton:true,
-      closeButtonText:"OK"
-    });
-
-    toast.present();
+   if (this.toast){
+     this.toast.dismiss();
+   }
+   this.toast = this.toastCtrl.create({
+       message: mensaje,
+       position: 'bottom',
+       showCloseButton:true,
+       closeButtonText:"OK"
+     });
+    this.toast.present();
   }
 }

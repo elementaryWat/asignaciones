@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ToastController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, ToastController, LoadingController, Loading, Toast } from 'ionic-angular';
 import {AuthProvider} from '../../providers/auth/auth';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Credencial} from '../../app/interfaces/credencial.interface';
@@ -18,6 +18,7 @@ import {Credencial} from '../../app/interfaces/credencial.interface';
 export class LoginPage {
   formLogin:FormGroup;
   loader:Loading;
+  toast:Toast;
   constructor(private authProvider:AuthProvider,
               private toastCtrl:ToastController,
               private formBuilder:FormBuilder,
@@ -33,8 +34,8 @@ export class LoginPage {
   // }
   login(){
     //console.log(this.formLogin);
-    this.presentLoading();
     if (this.formLogin.valid){
+      this.presentLoading();
       this.authProvider.login({
         email:this.formLogin.controls['email'].value,
         password:this.formLogin.controls['password'].value
@@ -68,13 +69,15 @@ export class LoginPage {
     this.loader.present();
   }
   presentToast(mensaje:string) {
-   let toast = this.toastCtrl.create({
-       message: mensaje,
-       position: 'bottom',
-       showCloseButton:true,
-       closeButtonText:"OK"
-     });
-
-     toast.present();
+    if (this.toast){
+      this.toast.dismiss();
+    }
+    this.toast = this.toastCtrl.create({
+        message: mensaje,
+        position: 'bottom',
+        showCloseButton:true,
+        closeButtonText:"OK"
+      });
+     this.toast.present();
    }
 }
