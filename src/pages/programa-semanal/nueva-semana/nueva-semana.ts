@@ -90,4 +90,9 @@ export class NuevaSemanaPage {
      });
     this.toast.present();
   }
+  ionViewDidLeave(){
+    if (this.toast){
+      this.toast.dismiss();
+    }
+  }
 }

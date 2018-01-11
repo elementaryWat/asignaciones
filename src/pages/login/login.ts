@@ -80,4 +80,9 @@ export class LoginPage {
       });
      this.toast.present();
    }
+   ionViewDidLeave(){
+     if (this.toast){
+       this.toast.dismiss();
+     }
+  }
 }
