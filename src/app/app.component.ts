@@ -11,7 +11,6 @@ import {AuthProvider} from '../providers/auth/auth';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = TabsPage;
   rootPage:any;
   constructor(platform: Platform,
               statusBar: StatusBar,
