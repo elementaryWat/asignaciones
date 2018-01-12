@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Nueva Familia</ion-title>
+    <ion-title>Familias {{authProvider.currentUser.congregacion}}</ion-title>
     <ion-buttons end>
         <button ion-button icon-only (click)="dismiss()">
           <ion-icon ios="ios-close" md="md-close"></ion-icon>
@@ -35,19 +35,15 @@
        type="text"></ion-input>
     </ion-item>
     <button [disabled]="formNewFamily.invalid"
-     ion-button round block type="submit">Agregar</button>
+     ion-button outline round block type="submit">Agregar</button>
   </form>
   <br>
-  <button (click)="showFamilias=!showFamilias"
-    ion-button round outline block color="secondary" icon-left>
-    <ion-icon name="ios-arrow-down" *ngIf="!showFamilias"></ion-icon>
-    <ion-icon name="ios-arrow-up" *ngIf="showFamilias"></ion-icon>
-    Familias actuales
-    <ion-badge item-end>{{familias.length}}</ion-badge>
-  </button>
-  <ion-list *ngIf="showFamilias && familias.length>0">
-    <ion-item *ngFor="let familia of familias">
-      <h2>{{familia.apellido}}</h2>
-    </ion-item>
+  <ion-list *ngIf="familias.length>0">
+    <ion-item-group>
+      <ion-item-divider><h2>Familias existentes<small>({{familias.length}})</small></h2></ion-item-divider>
+      <ion-item *ngFor="let familia of familias">
+        <h4>{{familia.apellido}}</h4>
+      </ion-item>
+    </ion-item-group>
   </ion-list>
 </ion-content>

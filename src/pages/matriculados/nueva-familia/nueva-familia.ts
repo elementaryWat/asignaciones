@@ -26,7 +26,6 @@ import {Familia} from '../../../app/interfaces/familia.interface';
 })
 
 export class NuevaFamiliaPage {
-  showFamilias:boolean=false;
   familias:Familia[]=[];
   familia:Familia;
   toast:Toast;
@@ -62,6 +61,8 @@ export class NuevaFamiliaPage {
             this.familia.domicilio="";
             this.loader.dismiss();
             context.presentToast("Se agrego la familia de manera exitosa");
+          }).catch(error=>{
+            context.presentToast("Ha ocurrido un error: "+ error);
           });
         }else{
           this.loader.dismiss();
