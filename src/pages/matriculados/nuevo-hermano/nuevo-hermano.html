@@ -43,32 +43,31 @@
   </ion-item>
   <ion-item>
     <ion-label>Publicador</ion-label>
-    <ion-toggle checked="true"
-                name="publicador"
+    <ion-toggle name="publicador"
+                (ionChange)="setAFalsoP()"
                 [(ngModel)]="hermano.publicador"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="hermano.publicador">
     <ion-label>Bautizado</ion-label>
-    <ion-toggle checked="true"
-                name="bautizado"
+    <ion-toggle name="bautizado"
+                (ionChange)="setAFalsoB()"
                 [(ngModel)]="hermano.bautizado"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.bautizado">
+  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Precursor Regular</ion-label>
-    <ion-toggle checked="false"
-                name="precursorRegular"
+    <ion-toggle name="precursorRegular"
                 [(ngModel)]="hermano.precursorRegular"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.bautizado">
+  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Siervo Ministerial</ion-label>
-    <ion-toggle checked="false"
-                name="siervoMinisterial"
+    <ion-toggle name="siervoMinisterial"
+                (ionChange)="setAFalsoS()"
                 [(ngModel)]="hermano.siervoMinisterial"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.bautizado">
+  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Anciano</ion-label>
-    <ion-toggle checked="false"
-                name="anciano"
+    <ion-toggle name="anciano"
+                (ionChange)="setAFalsoA()"
                 [(ngModel)]="hermano.anciano"></ion-toggle>
   </ion-item>
   <br>

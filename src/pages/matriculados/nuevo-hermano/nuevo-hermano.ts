@@ -26,7 +26,7 @@ export class NuevoHermanoPage {
           nombre:'',
           userId:'',
           fechaNacimiento:'',
-          telefono:null,
+          telefono:'',
           familia:'',
           publicador:true,
           bautizado:true,
@@ -47,5 +47,29 @@ export class NuevoHermanoPage {
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad NuevoHermanoPage');
   // }
-
+  setAFalsoP(){
+    if(!this.hermano.publicador){
+      this.hermano.bautizado=false;
+      this.hermano.precursorRegular=false;
+      this.hermano.siervoMinisterial=false;
+      this.hermano.anciano=false;
+    }
+  }
+  setAFalsoB(){
+    if(!this.hermano.bautizado){
+      this.hermano.precursorRegular=false;
+      this.hermano.siervoMinisterial=false;
+      this.hermano.anciano=false;
+    }
+  }
+  setAFalsoS(){
+    if(this.hermano.siervoMinisterial){
+      this.hermano.anciano=false;
+    }
+  }
+  setAFalsoA(){
+    if(this.hermano.anciano){
+      this.hermano.siervoMinisterial=false;
+    }
+  }
 }

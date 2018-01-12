@@ -2,7 +2,7 @@ export interface Hermano{
   nombre:string,
   userId:string,
   fechaNacimiento:string,
-  telefono:number,
+  telefono:string,
   familia:string,
   publicador:boolean,
   bautizado?:boolean,
