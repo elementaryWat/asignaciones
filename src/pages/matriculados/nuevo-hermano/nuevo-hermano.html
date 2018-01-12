@@ -7,12 +7,72 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>nuevoHermano</ion-title>
+    <ion-title>Nuevo Hermano</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="dismiss()">
+          <ion-icon ios="ios-close" md="md-close"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+<form #formNewHermano="ngForm" (ngSubmit)="agregarHermano(formNewHermano)">
+  <ion-item>
+    <ion-label>Familia</ion-label>
+    <ion-select [(ngModel)]="hermano.familia" name="familia"
+                 okText="Ok" cancelText="Cancelar" required>
+      <ion-option *ngFor="let familia of familias"
+       [value]="familia.fid">{{familia.apellido}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Nombre</ion-label>
+    <ion-input [(ngModel)]="hermano.nombre"
+     required
+     name="nombre"
+     type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Telefono celular</ion-label>
+    <ion-input [(ngModel)]="hermano.telefono"
+     name="celular"
+     type="number"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Publicador</ion-label>
+    <ion-toggle checked="true"
+                name="publicador"
+                [(ngModel)]="hermano.publicador"></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="hermano.publicador">
+    <ion-label>Bautizado</ion-label>
+    <ion-toggle checked="true"
+                name="bautizado"
+                [(ngModel)]="hermano.bautizado"></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="hermano.bautizado">
+    <ion-label>Precursor Regular</ion-label>
+    <ion-toggle checked="false"
+                name="precursorRegular"
+                [(ngModel)]="hermano.precursorRegular"></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="hermano.bautizado">
+    <ion-label>Siervo Ministerial</ion-label>
+    <ion-toggle checked="false"
+                name="siervoMinisterial"
+                [(ngModel)]="hermano.siervoMinisterial"></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="hermano.bautizado">
+    <ion-label>Anciano</ion-label>
+    <ion-toggle checked="false"
+                name="anciano"
+                [(ngModel)]="hermano.anciano"></ion-toggle>
+  </ion-item>
+  <br>
+  <button [disabled]="formNewHermano.invalid"
+   ion-button round block type="submit">Agregar</button>
+</form>
 </ion-content>

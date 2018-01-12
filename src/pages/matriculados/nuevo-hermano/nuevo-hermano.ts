@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NgForm } from '@angular/forms';
+import { IonicPage, ViewController } from 'ionic-angular';
+import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
+import {Hermano} from '../../../app/interfaces/hermano.interface';
+import {Familia} from '../../../app/interfaces/familia.interface';
 
 /**
  * Generated class for the NuevoHermanoPage page.
@@ -14,12 +18,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'nuevo-hermano.html',
 })
 export class NuevoHermanoPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  hermano:Hermano;
+  familias:Familia[];
+  constructor(private viewCtrl:ViewController,
+              private firestoreHProvider:FirestoreHermanosProvider) {
+        this.hermano={
+          nombre:'',
+          userId:'',
+          fechaNacimiento:'',
+          telefono:null,
+          familia:'',
+          publicador:true,
+          bautizado:true,
+          precursorRegular:false,
+          siervoMinisterial:false,
+          anciano:false
+        };
+        this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
+          this.familias=familias;
+        });
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NuevoHermanoPage');
-  }
+  dismiss() {
+   this.viewCtrl.dismiss();
+ }
+ agregarHermano(formNewHermano:NgForm){
+   console.log(formNewHermano);
+ }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad NuevoHermanoPage');
+  // }
 
 }

@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import {AuthProvider} from '../auth/auth';
 import {Familia} from '../../app/interfaces/familia.interface';
+import {Hermano} from '../../app/interfaces/hermano.interface';
 /*
   Generated class for the FirestoreHermanosProvider provider.
 
@@ -25,7 +26,10 @@ export class FirestoreHermanosProvider {
                                                                .where('apellido','==',familia.apellido))
                             .valueChanges();
   }
-  agregarFamilia(familia:Familia){
-    return this.firestoredb.collection<Familia>('familias').add(familia);
+  agregarFamilia(familia:Familia):Promise<any>{
+    let promiseAdd = this.firestoredb.collection<Familia>('familias').add(familia);
+    return promiseAdd.then(docRef=> {
+      return this.firestoredb.collection<Familia>('familias').doc(docRef.id).update({fid:docRef.id});
+    });
   }
 }

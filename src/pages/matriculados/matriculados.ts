@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController } from 'ionic-angular';
 import {NuevaFamiliaPage} from './nueva-familia/nueva-familia';
+import {NuevoHermanoPage} from './nuevo-hermano/nuevo-hermano';
 /**
  * Generated class for the MatriculadosPage page.
  *
@@ -24,5 +25,9 @@ export class MatriculadosPage {
   presentModalFamily() {
       let modal = this.modalCtrl.create(NuevaFamiliaPage);
       modal.present();
-    }
+  }
+  presentModalHermano() {
+      let modal = this.modalCtrl.create(NuevoHermanoPage);
+      modal.present();
+  }
 }

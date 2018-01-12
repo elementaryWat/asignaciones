@@ -27,6 +27,13 @@
        name="apellido"
        type="text"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label floating>Domicilio</ion-label>
+      <ion-input [(ngModel)]="familia.domicilio"
+       required
+       name="domicilio"
+       type="text"></ion-input>
+    </ion-item>
     <button [disabled]="formNewFamily.invalid"
      ion-button round block type="submit">Agregar</button>
   </form>
