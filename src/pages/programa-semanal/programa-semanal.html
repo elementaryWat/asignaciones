@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid class="text-center caja-vacia" *ngIf="semanas.length==0">
+  <ion-grid class="text-center caja-vacia" *ngIf="semanas.length==0 && !loading">
     <ion-row>
       <ion-col  align="center">
         <ion-icon ios="ios-calendar" md="md-calendar" class="icono-grande"></ion-icon>

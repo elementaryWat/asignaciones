@@ -55,7 +55,7 @@ export class NuevaFamiliaPage {
  }
  agregarFamilia(formNewFamily:NgForm){
    //console.log(formNewFamily);
-   this.presentLoading();
+   this.presentLoading("Agregando familia");
    let suscripcionAddF=this.firestoreHProvider.verificarExistenciaFamilia(this.familia).subscribe(familias=>{
         if(familias.length==0){
             this.firestoreHProvider.agregarFamilia(this.familia).then((docRef)=>{
@@ -91,9 +91,9 @@ export class NuevaFamiliaPage {
      });
     this.toast.present();
   }
-  presentLoading() {
+  presentLoading(mensaje:string) {
     this.loader = this.loadingCtrl.create({
-      content: "Por favor espere..."
+      content: mensaje
     });
     this.loader.present();
   }

@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams  } from 'ionic-angular';
+import { IonicPage,
+          NavController,
+          NavParams,
+          LoadingController,
+          Loading  } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
 import { FirestoreProvider } from '../../providers/firestore/firestore';
@@ -25,15 +29,23 @@ export class ProgramaSemanalPage {
   semanas: Semana[]=[];
   fechaLimInf:string;
   primerLunes:string;
+  loader:Loading;
+  loading:boolean=true;
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private modalCtrl:ModalController,
+              private loadingCtrl:LoadingController,
               private firestoreService: FirestoreProvider) {
-                this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
-                firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
-                  this.semanas=semanas;
-                });
-                this.definirFechaInicial();
+      this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
+      this.presentLoading("Obteniendo semanas..");
+      firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
+        if (this.loading){
+          this.loader.dismiss();
+          this.loading=false;
+        }
+        this.semanas=semanas;
+      });
+      this.definirFechaInicial();
   }
 
   // ionViewDidLoad() {
@@ -60,5 +72,11 @@ export class ProgramaSemanalPage {
         fechaDesde:fechaDesde,
         fechaHasta:fechaHasta
       });
+    }
+    presentLoading(mensaje:string) {
+      this.loader = this.loadingCtrl.create({
+        content: mensaje
+      });
+      this.loader.present();
     }
   }

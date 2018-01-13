@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage,
+         ModalController,
+         NavController,
+         LoadingController,
+         Loading} from 'ionic-angular';
 import {NuevaFamiliaPage} from './nueva-familia/nueva-familia';
 import {NuevoHermanoPage} from './nuevo-hermano/nuevo-hermano';
 import {FamiliaConHermano} from '../../app/interfaces/familiaConHermano.interface';
@@ -22,11 +26,19 @@ export class MatriculadosPage {
   familias:FamiliaConHermano[]=[];
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
+  loader:Loading;
+  loading:boolean=true;
   constructor(private modalCtrl:ModalController,
               private navCtrl: NavController,
-              private firestoreHProvider:FirestoreHermanosProvider) {
+              private firestoreHProvider:FirestoreHermanosProvider,
+              private loadingCtrl:LoadingController) {
+      this.presentLoading("Obteniendo hermanos..");
       this.firestoreHProvider.obtenerHermanosPorFamilia();
       this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
+        if (this.loading){
+          this.loader.dismiss();
+          this.loading=false;
+        }
         this.familias=familias;
       });
   }
@@ -45,6 +57,12 @@ export class MatriculadosPage {
         'operacion':'create'
       });
       modal.present();
+  }
+  presentLoading(mensaje:string) {
+    this.loader = this.loadingCtrl.create({
+      content: mensaje
+    });
+    this.loader.present();
   }
   irAFamilias(fechaDesde:string, fechaHasta:string){
     this.navCtrl.push(NuevaFamiliaPage);

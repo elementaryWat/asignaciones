@@ -18,7 +18,7 @@
 
 
 <ion-content>
-  <ion-grid class="text-center caja-vacia" *ngIf="familias.length==0">
+  <ion-grid class="text-center caja-vacia" *ngIf="familias.length==0 && !loading">
     <ion-row>
       <ion-col  align="center">
         <ion-icon ios="ios-person" md="md-person" class="icono-grande"></ion-icon>
