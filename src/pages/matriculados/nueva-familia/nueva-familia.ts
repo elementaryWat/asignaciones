@@ -10,7 +10,7 @@ import { IonicPage,
           Loading} from 'ionic-angular';
 import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {AuthProvider} from '../../../providers/auth/auth';
-import {Observable} from 'rxjs/Observable';
+import {Subscription} from 'rxjs/Subscription';
 import {Familia} from '../../../app/interfaces/familia.interface';
 /**
  * Generated class for the NuevaFamiliaPage page.
@@ -30,18 +30,20 @@ export class NuevaFamiliaPage {
   familia:Familia;
   toast:Toast;
   loader:Loading;
+  suscripcion:Subscription;
   constructor(private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
               private authProvider:AuthProvider,
               private toastCtrl:ToastController,
               private loadingCtrl:LoadingController) {
-        this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
+        this.suscripcion=this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
         });
         this.familia={
           apellido:'',
           domicilio:'',
-          congregacion:this.authProvider.currentUser.congregacion
+          congregacion:this.authProvider.currentUser.congregacion,
+          tieneintegrantes:false
         };
   }
 
@@ -51,22 +53,28 @@ export class NuevaFamiliaPage {
   dismiss() {
    this.viewCtrl.dismiss();
  }
- agregarFamilia(formNewFamily:NgForm,context:NuevaFamiliaPage){
+ agregarFamilia(formNewFamily:NgForm){
    //console.log(formNewFamily);
    this.presentLoading();
-   let suscripcionAddF=this.firestoreHProvider.verificarExistencia(this.familia).subscribe(familias=>{
+   let suscripcionAddF=this.firestoreHProvider.verificarExistenciaFamilia(this.familia).subscribe(familias=>{
         if(familias.length==0){
-          this.firestoreHProvider.agregarFamilia(this.familia).then(()=>{
-            this.familia.apellido="";
-            this.familia.domicilio="";
-            this.loader.dismiss();
-            context.presentToast("Se agrego la familia de manera exitosa");
+            this.firestoreHProvider.agregarFamilia(this.familia).then((docRef)=>{
+              this.firestoreHProvider.actualizarFid(docRef).then(()=>{
+                this.familia.apellido="";
+                this.familia.domicilio="";
+                this.loader.dismiss();
+                this.presentToast("Se agrego la familia de manera exitosa");
+              }).catch(error=>{
+                this.loader.dismiss();
+                this.presentToast("No se ha completado la insercion de la familia correctamente. Eliminela y vuelva a agregarla para evitar inconvenientes en el futuro");
+              });
           }).catch(error=>{
-            context.presentToast("Ha ocurrido un error: "+ error);
+            this.loader.dismiss();
+            this.presentToast("Ha ocurrido un error: "+ error);
           });
         }else{
           this.loader.dismiss();
-          context.presentToast("Ya existe una familia con este apellido. Para evitar conflictos agregue al apellido la/s primera/s letras/s del nombre de un integrante");
+          this.presentToast("Ya existe una familia con este apellido. Para evitar conflictos agregue al apellido la/s primera/s letras/s del nombre de un integrante");
         }
         suscripcionAddF.unsubscribe();
    });
@@ -89,9 +97,10 @@ export class NuevaFamiliaPage {
     });
     this.loader.present();
   }
-  ionViewDidLeave(){
+  ionViewWillUnload(){
     if (this.toast){
       this.toast.dismiss();
     }
+    this.suscripcion.unsubscribe();
   }
 }

@@ -1,5 +1,6 @@
 export interface Hermano{
   nombre:string,
+  hid?:string,
   userId:string,
   fechaNacimiento:string,
   telefono:string,

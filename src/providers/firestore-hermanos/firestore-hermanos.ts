@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {AuthProvider} from '../auth/auth';
 import {Familia} from '../../app/interfaces/familia.interface';
 import {Hermano} from '../../app/interfaces/hermano.interface';
+import firebase from 'firebase';
+import 'firebase/firestore';
 /*
   Generated class for the FirestoreHermanosProvider provider.
 
@@ -12,24 +14,56 @@ import {Hermano} from '../../app/interfaces/hermano.interface';
 */
 @Injectable()
 export class FirestoreHermanosProvider {
-
+  dbT:firebase.firestore.Firestore;
   constructor(private firestoredb:AngularFirestore,
               private authProvider:AuthProvider) {
+      //Referencia de firestore a usar para transacciones
+      this.dbT = firebase.firestore();
   }
   obtenerFamilias(){
     return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
                                                             .orderBy('apellido'))
                             .valueChanges();
   }
-  verificarExistencia(familia:Familia){
+  obtenerFamiliasConIntegrantes(){
+    return this.firestoredb.collection<Familia>('familias', ref => ref.where('tieneintegrantes','==',true)
+                                                                      .where('congregacion','==',this.authProvider.currentUser.congregacion)  
+                                                                      .orderBy('apellido'))
+                            .valueChanges();
+  }
+  obtenerHermanosFamilia(fid:string){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('familia','==',fid))
+                           .valueChanges();
+  }
+  verificarExistenciaFamilia(familia:Familia){
     return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',familia.congregacion)
-                                                               .where('apellido','==',familia.apellido))
+                                                                      .where('apellido','==',familia.apellido))
                             .valueChanges();
   }
   agregarFamilia(familia:Familia):Promise<any>{
-    let promiseAdd = this.firestoredb.collection<Familia>('familias').add(familia);
-    return promiseAdd.then(docRef=> {
-      return this.firestoredb.collection<Familia>('familias').doc(docRef.id).update({fid:docRef.id});
-    });
+    return this.firestoredb.collection<Familia>('familias').add(familia);
+  }
+  actualizarFid(docRef:any){
+    return this.firestoredb.collection<Familia>('familias').doc(docRef.id).update({fid:docRef.id});
+  }
+  verificarExistenciaHermano(hermano:Hermano){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('familia','==',hermano.familia)
+                                                                      .where('nombre','==',hermano.nombre))
+                            .valueChanges();
+  }
+  agregarHermano(hermano:Hermano):Promise<any>{
+    return this.firestoredb.collection<Hermano>('hermanos').add(hermano);
+  }
+  configHermanoyFamilia(hid:string, fid:string){
+    //Actualizacion en lotes del atributo id del hermano y tieneintegrantes de familia
+    var batch = this.dbT.batch();
+    var hermanoRef = this.dbT.collection("hermanos").doc(hid);
+    batch.update(hermanoRef, {'hid': hid});
+
+    var familiaRef = this.dbT.collection("familias").doc(fid);
+    batch.update(familiaRef, {"tieneintegrantes": true});
+
+    // Commit the batch
+    return batch.commit();
   }
 }
