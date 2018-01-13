@@ -54,7 +54,7 @@ export class NuevoHermanoPage {
             };
             break;
           case 'update':
-            this.hermano=navParams.get("hermano");
+            this.hermano=Object.create(navParams.get("hermano"));
             break;
         }
 
