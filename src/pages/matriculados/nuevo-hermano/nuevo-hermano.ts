@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonicPage,
+         NavParams,
          ViewController,
          LoadingController,
          Loading,
@@ -24,27 +25,39 @@ import {Subscription} from 'rxjs/Subscription';
   templateUrl: 'nuevo-hermano.html',
 })
 export class NuevoHermanoPage {
+  operacion:string;
   hermano:Hermano;
   familias:Familia[];
   suscripcion:Subscription;
   loader:Loading;
   toast:Toast;
-  constructor(private viewCtrl:ViewController,
+  constructor(private navParams:NavParams,
+              private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController) {
-        this.hermano={
-          nombre:'',
-          userId:'',
-          fechaNacimiento:'',
-          telefono:'',
-          familia:'',
-          publicador:true,
-          bautizado:true,
-          precursorRegular:false,
-          siervoMinisterial:false,
-          anciano:false
-        };
+      this.operacion=navParams.get("operacion");
+      console.log(this.operacion);
+      switch(this.operacion){
+          case 'create':
+            this.hermano={
+              nombre:'',
+              userId:'',
+              fechaNacimiento:'',
+              telefono:'',
+              familia:'',
+              publicador:true,
+              bautizado:true,
+              precursorRegular:false,
+              siervoMinisterial:false,
+              anciano:false
+            };
+            break;
+          case 'update':
+            this.hermano=navParams.get("hermano");
+            break;
+        }
+
         this.suscripcion=this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
         });
@@ -53,8 +66,8 @@ export class NuevoHermanoPage {
    this.viewCtrl.dismiss();
  }
  agregarHermano(formNewHermano:NgForm){
-   //console.log(formNewFamily);
-   this.presentLoading();
+   console.log(formNewHermano);
+   this.presentLoading("Agregando hermano...");
    let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.hermano).subscribe(familias=>{
         if(familias.length==0){
             this.firestoreHProvider.agregarHermano(this.hermano).then((docRef)=>{
@@ -88,12 +101,25 @@ export class NuevoHermanoPage {
         suscripcionAddH.unsubscribe();
    });
  }
+ actualizarHermano(){
+   //console.log(formNewFamily);
+   this.presentLoading("Actualizando hermano...");
+   this.firestoreHProvider.actualizarHermano(this.hermano)
+                          .then(()=>{
+                            this.loader.dismiss();
+                            this.presentToast(`Se actualizaron los datos de ${this.hermano.nombre} de manera correcta`);
+                          })
+                          .catch((error)=>{
+                            this.loader.dismiss();
+                            this.presentToast("Ha ocurrido un error: "+error);
+                          });
+ }
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad NuevoHermanoPage');
   // }
-  presentLoading() {
+  presentLoading(mensaje:string) {
     this.loader = this.loadingCtrl.create({
-      content: "Por favor espere..."
+      content: mensaje
     });
     this.loader.present();
   }

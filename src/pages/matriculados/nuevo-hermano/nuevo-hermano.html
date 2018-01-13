@@ -7,8 +7,9 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Nuevo Hermano</ion-title>
-    <ion-buttons end>
+    <ion-title *ngIf="operacion=='create'">Nuevo Hermano</ion-title>
+    <ion-title *ngIf="operacion=='update'">{{hermano.nombre}}</ion-title>
+    <ion-buttons end *ngIf="operacion=='create'">
         <button ion-button icon-only (click)="dismiss()">
           <ion-icon ios="ios-close" md="md-close"></ion-icon>
         </button>
@@ -71,7 +72,10 @@
                 [(ngModel)]="hermano.anciano"></ion-toggle>
   </ion-item>
   <br>
-  <button [disabled]="formNewHermano.invalid"
+  <button *ngIf="operacion=='create'" [disabled]="formNewHermano.invalid"
    ion-button outline round block type="submit">Agregar</button>
+   <ion-fab right bottom *ngIf="operacion=='update' && formNewHermano.dirty && formNewHermano.valid">
+     <button ion-fab> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
+   </ion-fab>
 </form>
 </ion-content>

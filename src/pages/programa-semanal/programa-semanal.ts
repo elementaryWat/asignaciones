@@ -22,7 +22,7 @@ import {SemanaPage} from './semana/semana';
   templateUrl: 'programa-semanal.html',
 })
 export class ProgramaSemanalPage {
-  semanas: Observable<any[]>;
+  semanas: Semana[]=[];
   fechaLimInf:string;
   primerLunes:string;
   constructor(private navCtrl: NavController,
@@ -30,7 +30,9 @@ export class ProgramaSemanalPage {
               private modalCtrl:ModalController,
               private firestoreService: FirestoreProvider) {
                 this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
-                this.semanas=firestoreService.obtenerSemanas(this.fechaLimInf);
+                firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
+                  this.semanas=semanas;
+                });
                 this.definirFechaInicial();
   }
 

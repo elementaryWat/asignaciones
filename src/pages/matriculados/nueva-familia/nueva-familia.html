@@ -37,7 +37,7 @@
     <ion-item-group>
       <ion-item-divider><h2>Familias existentes<small>({{familias.length}})</small></h2></ion-item-divider>
       <ion-item *ngFor="let familia of familias">
-        <h4>{{familia.apellido}}</h4>
+        {{familia.apellido}}
         <ion-icon ios="ios-trash" md="md-trash" item-end></ion-icon>
       </ion-item>
     </ion-item-group>

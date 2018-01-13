@@ -10,15 +10,23 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-grid class="text-center caja-vacia" *ngIf="semanas.length==0">
+    <ion-row>
+      <ion-col  align="center">
+        <ion-icon ios="ios-calendar" md="md-calendar" class="icono-grande"></ion-icon>
+        <p>Aún no se ha agregado ninguna semana</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-list>
-    <ion-item-sliding *ngFor="let semana of semanas | async">
-      <button ion-item (click)="irASemana(semana.desde, semana.hasta)">{{ semana.desde | fecha:semana.hasta}}</button>
-      <ion-item-options side="right">
+    <ion-item-sliding *ngFor="let semana of semanas">
+      <ion-item-options side="left">
         <button ion-button color="danger">
           <ion-icon name="trash"></ion-icon>
           Borrar
         </button>
       </ion-item-options>
+      <button ion-item (click)="irASemana(semana.desde, semana.hasta)">{{ semana.desde | fecha:semana.hasta}}</button>
     </ion-item-sliding>
   </ion-list>
   <ion-fab right bottom>

@@ -22,34 +22,28 @@ export class MatriculadosPage {
   familias:FamiliaConHermano[]=[];
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
-  suscHermanos:Subscription;
   constructor(private modalCtrl:ModalController,
               private navCtrl: NavController,
               private firestoreHProvider:FirestoreHermanosProvider) {
-      this.famMap=new Map();
-      this.suscripcionFam=this.firestoreHProvider.obtenerFamiliasConIntegrantes().subscribe(familys=>{
-        this.familias=[];
-        this.famMap.clear();
-          for(let familia of familys){
-              this.firestoreHProvider.obtenerHermanosFamilia(familia.fid).subscribe(integrantes=>{
-              let posF=this.famMap.get(familia.fid);
-              if(posF!=undefined){
-                this.familias[posF].integrantes=integrantes;
-              }else{
-                let lengthA=this.familias.push({apellido:familia.apellido,integrantes:integrantes});
-                this.famMap.set(familia.fid,lengthA-1);
-                //console.log(this.famMap.get(familia.fid));
-              }
-            });
-          }
+      this.firestoreHProvider.obtenerHermanosPorFamilia();
+      this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
+        this.familias=familias;
       });
   }
 
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad MatriculadosPage');
   // }
+  pageEditHermano(hermano:Hermano) {
+      this.navCtrl.push(NuevoHermanoPage,{
+        'operacion':'update',
+        'hermano':hermano
+      });
+  }
   presentModalHermano() {
-      let modal = this.modalCtrl.create(NuevoHermanoPage);
+      let modal = this.modalCtrl.create(NuevoHermanoPage,{
+        'operacion':'create'
+      });
       modal.present();
   }
   irAFamilias(fechaDesde:string, fechaHasta:string){
@@ -58,6 +52,5 @@ export class MatriculadosPage {
   ionViewWillUnload(){
     console.log("UnsuscribeFam");
     this.suscripcionFam.unsubscribe();
-    this.suscHermanos.unsubscribe();
   }
 }

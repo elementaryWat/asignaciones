@@ -29,7 +29,7 @@
   <ion-list>
     <ion-item-group *ngFor="let familia of familias">
       <ion-item-divider color="light"><h2>{{familia.apellido}}</h2></ion-item-divider>
-      <ion-item *ngFor="let hermano of familia.integrantes"><h4>{{hermano.nombre}}</h4></ion-item>
+      <button *ngFor="let hermano of familia.integrantes" ion-item (click)="pageEditHermano(hermano)">{{hermano.nombre}}</button>
     </ion-item-group>
   </ion-list>
   <ion-fab right bottom>
