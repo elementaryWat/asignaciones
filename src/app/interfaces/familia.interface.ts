@@ -3,5 +3,6 @@ export interface Familia{
   fid?:string;
   domicilio:string,
   congregacion:string,
+  telefono:string,
   tieneintegrantes:boolean
 }

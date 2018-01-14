@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { IonicPage,
          NavParams,
@@ -89,8 +88,8 @@ export class NuevoHermanoPage {
  }
  agregarHermano(){
    this.presentLoading("Agregando hermano...");
-   let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.formHermano.value).subscribe(familias=>{
-        if(familias.length==0){
+   let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.formHermano.value).subscribe(hermanos=>{
+        if(hermanos.length==0){
             this.firestoreHProvider.agregarHermano(this.formHermano.value).then((docRef)=>{
               this.firestoreHProvider.configHermanoyFamilia(docRef.id,this.formHermano.value.familia).then(()=>{
                 this.hermano={

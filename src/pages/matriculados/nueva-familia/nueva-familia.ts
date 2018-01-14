@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { IonicPage,
           NavController,
           NavParams,
@@ -31,6 +32,9 @@ export class NuevaFamiliaPage {
   toast:Toast;
   loader:Loading;
   suscripcion:Subscription;
+  formFamilia:FormGroup;
+  operacion:string;
+  cambioF:boolean;
   constructor(private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
               private authProvider:AuthProvider,
@@ -39,29 +43,50 @@ export class NuevaFamiliaPage {
         this.suscripcion=this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
         });
+        this.operacion="create";
         this.familia={
           apellido:'',
           domicilio:'',
+          telefono:'',
           congregacion:this.authProvider.currentUser.congregacion,
           tieneintegrantes:false
         };
+        this.crearForm();
   }
-
+  crearForm(){
+    this.formFamilia=new FormGroup({
+      'apellido':new FormControl('',Validators.required),
+      'congregacion':new FormControl('',Validators.required),
+      'fid':new FormControl(''),
+      'domicilio':new FormControl('',Validators.required),
+      'telefono':new FormControl(''),
+    });
+    this.formFamilia.patchValue(this.familia);
+    let valorI=this.formFamilia.value;
+    this.formFamilia.valueChanges.subscribe(()=>{
+      this.cambioF=JSON.stringify(this.formFamilia.value)!=JSON.stringify(valorI);
+    });
+  }
+  resetForm(){
+    this.operacion="create";
+    this.formFamilia.patchValue(this.familia);
+  }
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad NuevaFamiliaPage');
   // }
   dismiss() {
    this.viewCtrl.dismiss();
  }
- agregarFamilia(formNewFamily:NgForm){
-   //console.log(formNewFamily);
+ agregarFamilia(){
+   // console.log(this.formFamilia);
    this.presentLoading("Agregando familia...");
-   let suscripcionAddF=this.firestoreHProvider.verificarExistenciaFamilia(this.familia).subscribe(familias=>{
+   let suscripcionAddF=this.firestoreHProvider.verificarExistenciaFamilia(this.formFamilia.value).subscribe(familias=>{
         if(familias.length==0){
-            this.firestoreHProvider.agregarFamilia(this.familia).then((docRef)=>{
+            this.firestoreHProvider.agregarFamilia(this.formFamilia.value).then((docRef)=>{
               this.firestoreHProvider.actualizarFid(docRef).then(()=>{
-                this.familia.apellido="";
-                this.familia.domicilio="";
+                this.formFamilia.controls['apellido'].setValue("");
+                this.formFamilia.controls['domicilio'].setValue("");
+                this.formFamilia.controls['telefono'].setValue("");
                 this.loader.dismiss();
                 this.presentToast("Se agrego la familia de manera exitosa");
               }).catch(error=>{
@@ -78,6 +103,13 @@ export class NuevaFamiliaPage {
         }
         suscripcionAddF.unsubscribe();
    });
+ }
+ modificarFamilia(){
+   console.log(this.formFamilia);
+ }
+ cargarFam(fam:Familia){
+   this.formFamilia.patchValue(fam);
+   this.operacion="update";
  }
  presentToast(mensaje:string) {
    if (this.toast){

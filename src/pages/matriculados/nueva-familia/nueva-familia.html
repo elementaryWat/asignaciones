@@ -14,32 +14,49 @@
 
 
 <ion-content padding>
-  <form #formNewFamily="ngForm" (ngSubmit)="agregarFamilia(formNewFamily)">
+  <form [formGroup]="formFamilia">
     <ion-item>
       <ion-label floating>Apellido</ion-label>
-      <ion-input [(ngModel)]="familia.apellido"
-       required
-       name="apellido"
+      <ion-input formControlName="apellido"
        type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Domicilio</ion-label>
-      <ion-input [(ngModel)]="familia.domicilio"
-       required
-       name="domicilio"
+      <ion-input formControlName="domicilio"
        type="text"></ion-input>
     </ion-item>
-    <button [disabled]="formNewFamily.invalid"
-     ion-button outline round block type="submit">Agregar</button>
+    <ion-item>
+      <ion-label floating>Telefono fijo</ion-label>
+      <ion-input formControlName="telefono"
+       type="number"></ion-input>
+    </ion-item>
+    <button *ngIf="operacion=='create'" [disabled]="formFamilia.invalid"
+     ion-button outline round block type="button" (click)="agregarFamilia()">
+     Agregar
+    </button>
+    <button *ngIf="operacion=='update'" [disabled]="formFamilia.invalid"
+     ion-button outline round block type="button" (click)="modificarFamilia()">
+     Modificar
+    </button>
   </form>
   <br>
   <ion-list *ngIf="familias.length>0">
     <ion-item-group>
       <ion-item-divider><h2>Familias existentes<small>({{familias.length}})</small></h2></ion-item-divider>
-      <ion-item *ngFor="let familia of familias">
-        {{familia.apellido}}
-        <ion-icon ios="ios-trash" md="md-trash" item-end></ion-icon>
-      </ion-item>
+      <ion-item-sliding *ngFor="let fam of familias">
+        <ion-item (click)="cargarFam(fam)">
+          {{fam.apellido}}
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+            Borrar
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-item-group>
   </ion-list>
+  <ion-fab right bottom *ngIf="operacion=='update'">
+    <button ion-fab (click)="resetForm()" type="button"> <ion-icon ios="ios-add" md="md-add"></ion-icon></button>
+  </ion-fab>
 </ion-content>
