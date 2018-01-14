@@ -37,7 +37,7 @@ export class ProgramaSemanalPage {
               private loadingCtrl:LoadingController,
               private firestoreService: FirestoreProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
-      this.presentLoading("Obteniendo semanas..");
+      this.presentLoading("Cargando semanas...");
       firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
         if (this.loading){
           this.loader.dismiss();

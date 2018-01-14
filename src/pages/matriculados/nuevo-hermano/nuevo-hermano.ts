@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { IonicPage,
          NavParams,
          ViewController,
@@ -25,6 +26,8 @@ import {Subscription} from 'rxjs/Subscription';
   templateUrl: 'nuevo-hermano.html',
 })
 export class NuevoHermanoPage {
+  formHermano:FormGroup;
+  cambioF:boolean=false;
   operacion:string;
   hermano:Hermano;
   familias:Familia[];
@@ -54,19 +57,38 @@ export class NuevoHermanoPage {
             };
             break;
           case 'update':
-            this.hermano=Object.create(navParams.get("hermano"));
+            this.hermano=navParams.get("hermano");
             break;
         }
 
         this.suscripcion=this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
         });
+        this.crearForm();
+  }
+  crearForm(){
+    this.formHermano=new FormGroup({
+      'familia':new FormControl('',Validators.required),
+      'nombre':new FormControl('',Validators.required),
+      'telefono':new FormControl(''),
+      'publicador':new FormControl('',Validators.required),
+      'bautizado':new FormControl('',Validators.required),
+      'precursorRegular':new FormControl(''),
+      'siervoMinisterial':new FormControl(''),
+      'anciano':new FormControl(''),
+    });
+    this.formHermano.patchValue(this.hermano);
+    let valorI=this.formHermano.value;
+    this.formHermano.valueChanges.subscribe(()=>{
+      this.cambioF=JSON.stringify(this.formHermano.value)!=JSON.stringify(valorI);
+    });
   }
   dismiss() {
    this.viewCtrl.dismiss();
  }
- agregarHermano(formNewHermano:NgForm){
-   console.log(formNewHermano);
+ agregarHermano(){
+   console.log(this.formHermano);
+   console.log(this.hermano);
    this.presentLoading("Agregando hermano...");
    let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.hermano).subscribe(familias=>{
         if(familias.length==0){
@@ -103,7 +125,7 @@ export class NuevoHermanoPage {
  }
  actualizarHermano(){
    //console.log(formNewFamily);
-   this.presentLoading("Actualizando hermano...");
+   this.presentLoading(`Actualizando datos ${this.hermano.nombre}...`);
    this.firestoreHProvider.actualizarHermano(this.hermano)
                           .then(()=>{
                             this.loader.dismiss();

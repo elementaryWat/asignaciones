@@ -23,6 +23,7 @@ export class FirestoreHermanosProvider {
   hermanosPorFamilia:Subject<FamiliaConHermano[]>;
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
+  suscripcionesFam:Subscription[]=[];
   constructor(private firestoredb:AngularFirestore,
               private authProvider:AuthProvider) {
       //Referencia de firestore a usar para transacciones
@@ -49,8 +50,16 @@ export class FirestoreHermanosProvider {
     this.suscripcionFam=this.obtenerFamiliasConIntegrantes().subscribe(familys=>{
       this.familias=[];
       this.famMap.clear();
+      if (this.suscripcionesFam.length>0){
+        for (let suscripcion of this.suscripcionesFam){
+          suscripcion.unsubscribe();
+        }
+        this.suscripcionesFam=[];
+      }
         for(let familia of familys){
-            this.obtenerHermanosFamilia(familia.fid).subscribe(integrantes=>{
+            // console.log(`Se suscribe la familia ${familia.apellido}`);
+            let susc=this.obtenerHermanosFamilia(familia.fid).subscribe(integrantes=>{
+            // console.log(`Se obtiene la familia ${familia.apellido}`);
             let posF=this.famMap.get(familia.fid);
             if(posF!=undefined){
               this.familias[posF].integrantes=integrantes;
@@ -61,6 +70,7 @@ export class FirestoreHermanosProvider {
             }
             this.hermanosPorFamilia.next(this.familias);
           });
+          this.suscripcionesFam.push(susc);
         }
     });
   }

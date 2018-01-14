@@ -20,61 +20,53 @@
 
 
 <ion-content padding>
-<form #formNewHermano="ngForm" (ngSubmit)="agregarHermano(formNewHermano)">
+<form (ngSubmit)="agregarHermano()" [formGroup]="formHermano">
   <ion-item>
     <ion-label>Familia</ion-label>
-    <ion-select [(ngModel)]="hermano.familia" name="familia"
-                 okText="Ok" cancelText="Cancelar" required>
+    <ion-select formControlName="familia"
+                 okText="Ok" cancelText="Cancelar">
       <ion-option *ngFor="let familia of familias"
        [value]="familia.fid">{{familia.apellido}}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label floating>Nombre</ion-label>
-    <ion-input [(ngModel)]="hermano.nombre"
-     required
-     name="nombre"
+    <ion-input formControlName="nombre"
      type="text"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label floating>Telefono celular</ion-label>
-    <ion-input [(ngModel)]="hermano.telefono"
-     name="celular"
+    <ion-input formControlName="telefono"
      type="number"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Publicador</ion-label>
-    <ion-toggle name="publicador"
-                (ionChange)="setAFalsoP()"
-                [(ngModel)]="hermano.publicador"></ion-toggle>
+    <ion-toggle formControlName="publicador"
+                (ionChange)="setAFalsoP()"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="hermano.publicador">
     <ion-label>Bautizado</ion-label>
-    <ion-toggle name="bautizado"
-                (ionChange)="setAFalsoB()"
-                [(ngModel)]="hermano.bautizado"></ion-toggle>
+    <ion-toggle formControlName="bautizado"
+                (ionChange)="setAFalsoB()"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Precursor Regular</ion-label>
-    <ion-toggle name="precursorRegular"
-                [(ngModel)]="hermano.precursorRegular"></ion-toggle>
+    <ion-toggle formControlName="precursorRegular"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Siervo Ministerial</ion-label>
-    <ion-toggle name="siervoMinisterial"
-                (ionChange)="setAFalsoS()"
-                [(ngModel)]="hermano.siervoMinisterial"></ion-toggle>
+    <ion-toggle formControlName="siervoMinisterial"
+                (ionChange)="setAFalsoS()"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="hermano.publicador && hermano.bautizado">
     <ion-label>Anciano</ion-label>
-    <ion-toggle name="anciano"
-                (ionChange)="setAFalsoA()"
-                [(ngModel)]="hermano.anciano"></ion-toggle>
+    <ion-toggle formControlName="anciano"
+                (ionChange)="setAFalsoA()"></ion-toggle>
   </ion-item>
   <br>
-  <button *ngIf="operacion=='create'" [disabled]="formNewHermano.invalid"
+  <button *ngIf="operacion=='create'" [disabled]="formHermano.invalid"
    ion-button outline round block type="submit">Agregar</button>
-   <ion-fab right bottom *ngIf="operacion=='update' && formNewHermano.dirty && formNewHermano.valid">
+   <ion-fab right bottom *ngIf="operacion=='update' && cambioF && formHermano.dirty && formHermano.valid">
      <button ion-fab> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
    </ion-fab>
 </form>

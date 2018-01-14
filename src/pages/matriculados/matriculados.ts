@@ -32,7 +32,7 @@ export class MatriculadosPage {
               private navCtrl: NavController,
               private firestoreHProvider:FirestoreHermanosProvider,
               private loadingCtrl:LoadingController) {
-      this.presentLoading("Obteniendo hermanos..");
+      this.presentLoading("Cargando hermanos..");
       this.firestoreHProvider.obtenerHermanosPorFamilia();
       this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
         if (this.loading){
