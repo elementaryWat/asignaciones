@@ -69,10 +69,11 @@ export class NuevoHermanoPage {
   crearForm(){
     this.formHermano=new FormGroup({
       'familia':new FormControl('',Validators.required),
+      'hid':new FormControl(''),
       'nombre':new FormControl('',Validators.required),
       'telefono':new FormControl(''),
-      'publicador':new FormControl('',Validators.required),
-      'bautizado':new FormControl('',Validators.required),
+      'publicador':new FormControl(''),
+      'bautizado':new FormControl(''),
       'precursorRegular':new FormControl(''),
       'siervoMinisterial':new FormControl(''),
       'anciano':new FormControl(''),
@@ -87,13 +88,11 @@ export class NuevoHermanoPage {
    this.viewCtrl.dismiss();
  }
  agregarHermano(){
-   console.log(this.formHermano);
-   console.log(this.hermano);
    this.presentLoading("Agregando hermano...");
-   let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.hermano).subscribe(familias=>{
+   let suscripcionAddH=this.firestoreHProvider.verificarExistenciaHermano(this.formHermano.value).subscribe(familias=>{
         if(familias.length==0){
-            this.firestoreHProvider.agregarHermano(this.hermano).then((docRef)=>{
-              this.firestoreHProvider.configHermanoyFamilia(docRef.id,this.hermano.familia).then(()=>{
+            this.firestoreHProvider.agregarHermano(this.formHermano.value).then((docRef)=>{
+              this.firestoreHProvider.configHermanoyFamilia(docRef.id,this.formHermano.value.familia).then(()=>{
                 this.hermano={
                   nombre:'',
                   userId:'',
@@ -106,6 +105,7 @@ export class NuevoHermanoPage {
                   siervoMinisterial:false,
                   anciano:false
                 };
+                this.formHermano.patchValue(this.hermano);
                 this.loader.dismiss();
                 this.presentToast("Se agrego el hermano de manera exitosa");
               }).catch(error=>{
@@ -124,10 +124,11 @@ export class NuevoHermanoPage {
    });
  }
  actualizarHermano(){
-   //console.log(formNewFamily);
+   console.log(this.formHermano);
    this.presentLoading(`Actualizando datos ${this.hermano.nombre}...`);
-   this.firestoreHProvider.actualizarHermano(this.hermano)
+   this.firestoreHProvider.actualizarHermano(this.formHermano.value)
                           .then(()=>{
+                            this.cambioF=false;
                             this.loader.dismiss();
                             this.presentToast(`Se actualizaron los datos de ${this.hermano.nombre} de manera correcta`);
                           })
@@ -158,28 +159,28 @@ export class NuevoHermanoPage {
      this.toast.present();
    }
   setAFalsoP(){
-    if(!this.hermano.publicador){
-      this.hermano.bautizado=false;
-      this.hermano.precursorRegular=false;
-      this.hermano.siervoMinisterial=false;
-      this.hermano.anciano=false;
+    if(!this.formHermano.controls['publicador'].value){
+      this.formHermano.controls['bautizado'].setValue(false);
+      this.formHermano.controls['precursorRegular'].setValue(false);
+      this.formHermano.controls['siervoMinisterial'].setValue(false);
+      this.formHermano.controls['anciano'].setValue(false);
     }
   }
   setAFalsoB(){
-    if(!this.hermano.bautizado){
-      this.hermano.precursorRegular=false;
-      this.hermano.siervoMinisterial=false;
-      this.hermano.anciano=false;
+    if(!this.formHermano.controls['bautizado'].value){
+      this.formHermano.controls['precursorRegular'].setValue(false);
+      this.formHermano.controls['siervoMinisterial'].setValue(false);
+      this.formHermano.controls['anciano'].setValue(false);
     }
   }
   setAFalsoS(){
-    if(this.hermano.siervoMinisterial){
-      this.hermano.anciano=false;
+    if(this.formHermano.controls['siervoMinisterial'].value){
+      this.formHermano.controls['anciano'].setValue(false);
     }
   }
   setAFalsoA(){
-    if(this.hermano.anciano){
-      this.hermano.siervoMinisterial=false;
+    if(this.formHermano.controls['anciano'].value){
+      this.formHermano.controls['siervoMinisterial'].setValue(false);
     }
   }
   ionViewWillUnload(){

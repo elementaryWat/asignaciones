@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title *ngIf="operacion=='create'">Nuevo Hermano</ion-title>
-    <ion-title *ngIf="operacion=='update'">{{hermano.nombre}}</ion-title>
+    <ion-title *ngIf="operacion=='update'">{{formHermano.controls['nombre'].value}}</ion-title>
     <ion-buttons end *ngIf="operacion=='create'">
         <button ion-button icon-only (click)="dismiss()">
           <ion-icon ios="ios-close" md="md-close"></ion-icon>
@@ -44,30 +44,30 @@
     <ion-toggle formControlName="publicador"
                 (ionChange)="setAFalsoP()"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.publicador">
+  <ion-item *ngIf="formHermano.controls['publicador'].value">
     <ion-label>Bautizado</ion-label>
     <ion-toggle formControlName="bautizado"
                 (ionChange)="setAFalsoB()"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
+  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
     <ion-label>Precursor Regular</ion-label>
     <ion-toggle formControlName="precursorRegular"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
+  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
     <ion-label>Siervo Ministerial</ion-label>
     <ion-toggle formControlName="siervoMinisterial"
                 (ionChange)="setAFalsoS()"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="hermano.publicador && hermano.bautizado">
+  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
     <ion-label>Anciano</ion-label>
     <ion-toggle formControlName="anciano"
                 (ionChange)="setAFalsoA()"></ion-toggle>
   </ion-item>
   <br>
-  <button *ngIf="operacion=='create'" [disabled]="formHermano.invalid"
+  <button *ngIf="operacion=='create'" [disabled]="!formHermano.valid"
    ion-button outline round block type="submit">Agregar</button>
-   <ion-fab right bottom *ngIf="operacion=='update' && cambioF && formHermano.dirty && formHermano.valid">
-     <button ion-fab> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
-   </ion-fab>
 </form>
+<ion-fab right bottom *ngIf="operacion=='update' && cambioF && formHermano.dirty && formHermano.valid">
+  <button ion-fab (click)="actualizarHermano()" type="button"> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
+</ion-fab>
 </ion-content>
