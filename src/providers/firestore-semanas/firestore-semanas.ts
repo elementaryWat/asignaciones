@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/Observable';
   and Angular DI.
 */
 @Injectable()
-export class FirestoreProvider {
+export class FirestoreSemanasProvider {
   constructor(private firestoredb:AngularFirestore) {
     //console.log('Hello FirestoreProvider Provider');
 

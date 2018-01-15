@@ -7,7 +7,7 @@ import { IonicPage,
           AlertController} from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
-import { FirestoreProvider } from '../../providers/firestore/firestore';
+import { FirestoreSemanasProvider } from '../../providers/firestore-semanas/firestore-semanas';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
@@ -38,7 +38,7 @@ export class ProgramaSemanalPage {
               private modalCtrl:ModalController,
               private loadingCtrl:LoadingController,
               private alertCtrl:AlertController,
-              private firestoreService: FirestoreProvider) {
+              private firestoreService: FirestoreSemanasProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
       this.presentLoading("Cargando semanas...");
       firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
@@ -85,10 +85,10 @@ export class ProgramaSemanalPage {
     });
     this.loader.present();
   }
-  confirmarEliminar(){
+  confirmarEliminar(semana:Semana){
    let confirm = this.alertCtrl.create({
      title: '¿Eliminar semana?',
-     message: '¿Esta seguro de que desea eliminar esta semana?',
+     message: `¿Esta seguro de que desea eliminar semana del ${moment(semana.desde).format("DD/MM/YYYY")} al ${moment(semana.hasta).format("DD/MM/YYYY")}?`,
      buttons: [
        {
          text: 'NO'

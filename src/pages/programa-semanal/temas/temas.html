@@ -7,50 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Asignaciones</ion-title>
+    <ion-title>Temas</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <form (ngSubmit)="agregarTema()" [formGroup]="formAsignacion">
-    <ion-item>
-      <ion-label>Familia</ion-label>
-      <ion-select formControlName="tipo"
-                   (ionChange)="establecerTipo()"
-                   okText="Ok" cancelText="Cancelar">
-                   <ion-option value="estudiantil">Estudiantil</ion-option>
-                   <ion-option value="otra">Otra</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngIf="formHermano.controls['tipo'].value=='estudiantil'">
-      <ion-label>Con ayudante</ion-label>
-      <ion-toggle formControlName="ayudante"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>Tiene titulo</ion-label>
-      <ion-toggle formControlName="tituloSecundario"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>Duracion fija</ion-label>
-      <ion-toggle formControlName="duracionFija"></ion-toggle>
-    </ion-item>
-    <ion-item *ngIf="formHermano.controls['duracionFija'].value">
-      <ion-label floating>Duracion</ion-label>
-      <ion-input formControlName="duracion"
-       type="text"></ion-input>
-    </ion-item>
-    <ion-item *ngIf="formHermano.controls['tipo'].value=='otra'">>
-      <ion-label>Solo siervos nombrados</ion-label>
-      <ion-toggle formControlName="siervosNombrados"></ion-toggle>
-    </ion-item>
-    <ion-item *ngIf="formHermano.controls['tipo'].value=='otra' && formHermano.controls['siervosNombrados'].value">>
-      <ion-label>Solo siervos nombrados</ion-label>
-      <ion-toggle formControlName="ancianos"></ion-toggle>
-    </ion-item>
-    <br>
-    <button [disabled]="formAsignacion.invalid"
-     ion-button outline round block type="submit">Agregar</button>
-  </form>
+  <ion-grid class="text-center caja-vacia">
+    <ion-row>
+      <ion-col  align="center">
+        <ion-icon ios="ios-list-box" md="md-list-box" class="icono-grande"></ion-icon>
+        <p>Aún no hay ningun tema</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab right bottom (click)="irANuevoTema()">
+    <button ion-fab color="primary"><ion-icon ios="ios-add" md="md-add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

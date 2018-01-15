@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //Pages
 import {LoginPage} from '../pages/login/login';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
+  import { TemaPage } from '../pages/programa-semanal/tema/tema';
   import { TemasPage } from '../pages/programa-semanal/temas/temas';
   import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
   import {SemanaPage} from '../pages/programa-semanal/semana/semana';
@@ -26,9 +27,10 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import {FechaPipe} from '../pipes/fecha/fecha';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { FirestoreProvider } from '../providers/firestore/firestore';
+import { FirestoreSemanasProvider } from '../providers/firestore-semanas/firestore-semanas';
 import { FirestoreHermanosProvider } from '../providers/firestore-hermanos/firestore-hermanos';
 import { AuthProvider } from '../providers/auth/auth';
+import { FirestoreTemasProvider } from '../providers/firestore-temas/firestore-temas';
 
 const environment = {
   production: false,
@@ -47,6 +49,7 @@ const environment = {
     MyApp,
     LoginPage,
     ProgramaSemanalPage,
+      TemaPage,
       TemasPage,
       NuevaSemanaPage,
       SemanaPage,
@@ -77,6 +80,7 @@ const environment = {
     MyApp,
     LoginPage,
     ProgramaSemanalPage,
+      TemaPage,
       TemasPage,
       NuevaSemanaPage,
       SemanaPage,
@@ -90,10 +94,11 @@ const environment = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FirestoreProvider,
+    FirestoreSemanasProvider,
     FirestoreHermanosProvider,
     AuthProvider,
-    Network
+    Network,
+    FirestoreTemasProvider
   ]
 })
 export class AppModule {}

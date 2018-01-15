@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>Programa Semanal</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="irATemas()">
         <ion-icon ios="ios-list-box" md="md-list-box"></ion-icon>
       </button>
     </ion-buttons>
@@ -21,7 +21,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let semana of semanas">
       <ion-item-options side="left">
-        <button ion-button color="danger" (click)="confirmarEliminar()">
+        <button ion-button color="danger" (click)="confirmarEliminar(semana)">
           <ion-icon name="trash"></ion-icon>
           Borrar
         </button>
@@ -30,6 +30,6 @@
     </ion-item-sliding>
   </ion-list>
   <ion-fab right bottom>
-    <button ion-fab color="primary" (click)="presentModal()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab color="primary" (click)="presentModal()"><ion-icon ios="ios-add" md="md-add"></ion-icon></button>
   </ion-fab>
 </ion-content>

@@ -4,8 +4,10 @@ import { IonicPage,
           NavParams,
           ViewController,
           ToastController,
-          Toast} from 'ionic-angular';
-import {FirestoreProvider} from '../../../providers/firestore/firestore';
+          Toast,
+          LoadingController,
+          Loading} from 'ionic-angular';
+import {FirestoreSemanasProvider} from '../../../providers/firestore-semanas/firestore-semanas';
 import * as moment from 'moment';
 import 'moment/locale/es';
 
@@ -27,12 +29,13 @@ export class NuevaSemanaPage {
   primerLunes:string;
   fechaMaxima:string;
   toast:Toast;
-
+  loader:Loading;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl:ViewController,
               private toastCtrl: ToastController,
-              public firestoreService:FirestoreProvider) {
+              private loadingCtrl: LoadingController,
+              public firestoreService:FirestoreSemanasProvider) {
         this.primerLunes=moment().day(1).format("YYYY-MM-DD");
         this.fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
         // console.log(this.primerLunes);
@@ -49,6 +52,7 @@ export class NuevaSemanaPage {
     this.hastaFecha=moment(this.myDate).add(6,"days").format("YYYY-MM-DD");
   }
   agregarSemana(context:any){
+    this.presentLoading("Agregando semana...");
     if(moment(this.myDate).day()==1){
       let suscripcion=this.firestoreService.existeSemana(this.myDate)
                            .subscribe(data=>{
@@ -57,15 +61,17 @@ export class NuevaSemanaPage {
                                                                             .then(function(docRef) {
                                                                                 // console.log("Documento escrito con ID: ", docRef.id);
                                                                                 context.presentToast("Se ha agregado la semana de manera exitosa");
+                                                                                context.loader.dismiss();
                                                                                 context.dismiss();
-
                                                                             })
                                                                             .catch(function(error) {
                                                                                 // console.error("Error añadiendo documento: ", error);
-                                                                                context.presentToast("Hubo un error");
+                                                                                context.loader.dismiss();
+                                                                                context.presentToast("Hubo un error "+error);
                                                                           });
                                       }else{
                                         context.presentToast("Ya existe esta semana");
+                                        context.loader.dismiss();
                                       }
                                       //Evita que la semana se agregue sola
                                       suscripcion.unsubscribe();
@@ -89,6 +95,12 @@ export class NuevaSemanaPage {
        closeButtonText:"OK"
      });
     this.toast.present();
+  }
+  presentLoading(mensaje:string) {
+    this.loader = this.loadingCtrl.create({
+      content: mensaje
+    });
+    this.loader.present();
   }
   ionViewDidLeave(){
     if (this.toast){
