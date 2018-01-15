@@ -21,10 +21,10 @@ import {Subscription} from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
-  selector: 'page-nuevo-hermano',
-  templateUrl: 'nuevo-hermano.html',
+  selector: 'page-hermano',
+  templateUrl: 'hermano.html',
 })
-export class NuevoHermanoPage {
+export class HermanoPage {
   formHermano:FormGroup;
   cambioF:boolean=false;
   operacion:string;

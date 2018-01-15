@@ -8,12 +8,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //Pages
 import {LoginPage} from '../pages/login/login';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
+  import { TemasPage } from '../pages/programa-semanal/temas/temas';
   import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
   import {SemanaPage} from '../pages/programa-semanal/semana/semana';
 import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
 import { MatriculadosPage } from '../pages/matriculados/matriculados';
-  import {NuevaFamiliaPage} from '../pages/matriculados/nueva-familia/nueva-familia';
-  import {NuevoHermanoPage} from '../pages/matriculados/nuevo-hermano/nuevo-hermano';
+  import {FamiliaPage} from '../pages/matriculados/familia/familia';
+  import {HermanoPage} from '../pages/matriculados/hermano/hermano';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -46,12 +47,13 @@ const environment = {
     MyApp,
     LoginPage,
     ProgramaSemanalPage,
+      TemasPage,
       NuevaSemanaPage,
       SemanaPage,
     MisAsignacionesPage,
     MatriculadosPage,
-      NuevaFamiliaPage,
-      NuevoHermanoPage,
+      FamiliaPage,
+      HermanoPage,
     TabsPage,
     FechaPipe
   ],
@@ -75,12 +77,13 @@ const environment = {
     MyApp,
     LoginPage,
     ProgramaSemanalPage,
+      TemasPage,
       NuevaSemanaPage,
       SemanaPage,
     MisAsignacionesPage,
     MatriculadosPage,
-      NuevaFamiliaPage,
-      NuevoHermanoPage,
+      FamiliaPage,
+      HermanoPage,
     TabsPage
   ],
   providers: [

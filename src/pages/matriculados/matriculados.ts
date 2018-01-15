@@ -7,8 +7,8 @@ import { IonicPage,
          AlertController,
          ToastController,
          Toast,} from 'ionic-angular';
-import {NuevaFamiliaPage} from './nueva-familia/nueva-familia';
-import {NuevoHermanoPage} from './nuevo-hermano/nuevo-hermano';
+import {FamiliaPage} from './familia/familia';
+import {HermanoPage} from './hermano/hermano';
 import {FamiliaConHermano} from '../../app/interfaces/familiaConHermano.interface';
 import {FirestoreHermanosProvider} from '../../providers/firestore-hermanos/firestore-hermanos';
 import {Subscription} from 'rxjs/Subscription';
@@ -53,13 +53,13 @@ export class MatriculadosPage {
   //   console.log('ionViewDidLoad MatriculadosPage');
   // }
   pageEditHermano(hermano:Hermano) {
-      this.navCtrl.push(NuevoHermanoPage,{
+      this.navCtrl.push(HermanoPage,{
         'operacion':'update',
         'hermano':hermano
       });
   }
   presentModalHermano() {
-      let modal = this.modalCtrl.create(NuevoHermanoPage,{
+      let modal = this.modalCtrl.create(HermanoPage,{
         'operacion':'create'
       });
       modal.present();
@@ -71,7 +71,7 @@ export class MatriculadosPage {
     this.loader.present();
   }
   irAFamilias(fechaDesde:string, fechaHasta:string){
-    this.navCtrl.push(NuevaFamiliaPage);
+    this.navCtrl.push(FamiliaPage);
   }
   confirmarEliminar(hermano:Hermano){
    let confirm = this.alertCtrl.create({
@@ -94,7 +94,7 @@ export class MatriculadosPage {
 eliminarHermano(hermano:Hermano){
      this.presentLoading(`Eliminando a  ${hermano.nombre}...`);
      this.firestoreHProvider.eliminarHermano(hermano).then(()=>{
-                              this.firestoreHProvider.verificarMiembrosFamilia(hermano.familia).subscribe(hermanos=>{
+                              let susc=this.firestoreHProvider.verificarMiembrosFamilia(hermano.familia).subscribe(hermanos=>{
                                 if(hermanos.length==0){
                                   this.firestoreHProvider.esFamiliaSinIntegrantes(hermano.familia).then(()=>{
                                     this.loader.dismiss();
@@ -108,6 +108,7 @@ eliminarHermano(hermano:Hermano){
                                   this.loader.dismiss();
                                   this.presentToast(`Se ha eliminado a ${hermano.nombre} de manera correcta`);
                                 }
+                                susc.unsubscribe();
                               })
                             })
                             .catch(error=>{

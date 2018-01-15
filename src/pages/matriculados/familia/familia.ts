@@ -23,11 +23,11 @@ import {Familia} from '../../../app/interfaces/familia.interface';
 
 @IonicPage()
 @Component({
-  selector: 'page-nueva-familia',
-  templateUrl: 'nueva-familia.html',
+  selector: 'page-familia',
+  templateUrl: 'familia.html',
 })
 
-export class NuevaFamiliaPage {
+export class FamiliaPage {
   familias:Familia[]=[];
   familia:Familia;
   toast:Toast;

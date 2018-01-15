@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import 'moment/locale/es';
 import {Semana} from '../../app/interfaces/semana.interface';
 import {SemanaPage} from './semana/semana';
+import {TemasPage} from './temas/temas';
 /**
  * Generated class for the ProgramaSemanalPage page.
  *
@@ -68,35 +69,38 @@ export class ProgramaSemanalPage {
       let fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
       let modal = this.modalCtrl.create(NuevaSemanaPage,{fechaDesde:this.primerLunes});
       modal.present();
-    }
-    irASemana(fechaDesde:string, fechaHasta:string){
+  }
+  irATemas(){
+    this.navCtrl.push(TemasPage);
+  }
+  irASemana(fechaDesde:string, fechaHasta:string){
       this.navCtrl.push(SemanaPage,{
         fechaDesde:fechaDesde,
         fechaHasta:fechaHasta
       });
-    }
-    presentLoading(mensaje:string) {
-      this.loader = this.loadingCtrl.create({
-        content: mensaje
-      });
-      this.loader.present();
-    }
-    confirmarEliminar(){
-     let confirm = this.alertCtrl.create({
-       title: '¿Eliminar semana?',
-       message: '¿Esta seguro de que desea eliminar esta semana?',
-       buttons: [
-         {
-           text: 'NO'
-         },
-         {
-           text: 'Si',
-           handler: () => {
-            console.log("Se eliminara");
-           }
-         }
-       ]
-     });
-     confirm.present();
-   }
   }
+  presentLoading(mensaje:string) {
+    this.loader = this.loadingCtrl.create({
+      content: mensaje
+    });
+    this.loader.present();
+  }
+  confirmarEliminar(){
+   let confirm = this.alertCtrl.create({
+     title: '¿Eliminar semana?',
+     message: '¿Esta seguro de que desea eliminar esta semana?',
+     buttons: [
+       {
+         text: 'NO'
+       },
+       {
+         text: 'Si',
+         handler: () => {
+          console.log("Se eliminara");
+         }
+       }
+     ]
+   });
+   confirm.present();
+ }
+}
