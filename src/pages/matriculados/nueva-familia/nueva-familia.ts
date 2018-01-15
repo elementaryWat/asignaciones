@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild  } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { IonicPage,
+          Content,
           NavController,
           NavParams,
           ViewController,
@@ -35,6 +36,7 @@ export class NuevaFamiliaPage {
   formFamilia:FormGroup;
   operacion:string;
   cambioF:boolean;
+  @ViewChild(Content) content: Content;
   constructor(private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
               private authProvider:AuthProvider,
@@ -104,11 +106,23 @@ export class NuevaFamiliaPage {
         suscripcionAddF.unsubscribe();
    });
  }
- modificarFamilia(){
-   console.log(this.formFamilia);
+ actualizarFamilia(){
+   // console.log(this.formFamilia);
+   this.presentLoading(`Actualizando datos de la familia ${this.formFamilia.value.apellido}...`);
+   this.firestoreHProvider.actualizarfamilia(this.formFamilia.value)
+                          .then(()=>{
+                            this.cambioF=false;
+                            this.loader.dismiss();
+                            this.presentToast(`Se actualizaron los datos de la familia ${this.formFamilia.value.apellido} de manera correcta`);
+                          })
+                          .catch((error)=>{
+                            this.loader.dismiss();
+                            this.presentToast("Ha ocurrido un error: "+error);
+                          });
  }
  cargarFam(fam:Familia){
    this.formFamilia.patchValue(fam);
+   this.content.scrollToTop();
    this.operacion="update";
  }
  presentToast(mensaje:string) {

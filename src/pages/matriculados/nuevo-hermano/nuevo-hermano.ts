@@ -123,7 +123,7 @@ export class NuevoHermanoPage {
    });
  }
  actualizarHermano(){
-   console.log(this.formHermano);
+   // console.log(this.formHermano);
    this.presentLoading(`Actualizando datos ${this.hermano.nombre}...`);
    this.firestoreHProvider.actualizarHermano(this.formHermano.value)
                           .then(()=>{
