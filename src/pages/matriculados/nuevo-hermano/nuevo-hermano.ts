@@ -124,12 +124,12 @@ export class NuevoHermanoPage {
  }
  actualizarHermano(){
    // console.log(this.formHermano);
-   this.presentLoading(`Actualizando datos ${this.hermano.nombre}...`);
+   this.presentLoading(`Actualizando datos ${this.formHermano.value.nombre}...`);
    this.firestoreHProvider.actualizarHermano(this.formHermano.value)
                           .then(()=>{
                             this.cambioF=false;
                             this.loader.dismiss();
-                            this.presentToast(`Se actualizaron los datos de ${this.hermano.nombre} de manera correcta`);
+                            this.presentToast(`Se actualizaron los datos de ${this.formHermano.value.nombre} de manera correcta`);
                           })
                           .catch((error)=>{
                             this.loader.dismiss();

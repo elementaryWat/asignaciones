@@ -32,7 +32,11 @@
         <ion-item-sliding *ngFor="let hermano of familia.integrantes">
           <button ion-item (click)="pageEditHermano(hermano)">{{hermano.nombre}}</button>
           <ion-item-options side="left">
-            <button ion-button color="danger">
+            <button ion-button color="secondary">
+              <ion-icon ios="ios-contact" md="md-contact"></ion-icon>
+              Usuario
+            </button>
+            <button ion-button color="danger" (click)="confirmarEliminar(hermano)">
               <ion-icon name="trash"></ion-icon>
               Borrar
             </button>

@@ -21,7 +21,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let semana of semanas">
       <ion-item-options side="left">
-        <button ion-button color="danger">
+        <button ion-button color="danger" (click)="confirmarEliminar()">
           <ion-icon name="trash"></ion-icon>
           Borrar
         </button>

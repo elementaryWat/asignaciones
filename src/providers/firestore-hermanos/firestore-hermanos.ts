@@ -99,6 +99,15 @@ export class FirestoreHermanosProvider {
   agregarHermano(hermano:Hermano):Promise<any>{
     return this.firestoredb.collection<Hermano>('hermanos').add(hermano);
   }
+  eliminarHermano(hermano:Hermano):Promise<any>{
+    return this.firestoredb.collection<Hermano>('hermanos').doc(hermano.hid).delete();
+  }
+  verificarMiembrosFamilia(fid:string){
+    return this.firestoredb.collection<Hermano>('hermanos' , ref => ref.where('familia','==',fid)).valueChanges();
+  }
+  esFamiliaSinIntegrantes(fid:string){
+    return this.firestoredb.collection<Hermano>('familias').doc(fid).update({tieneintegrantes:false});
+  }
   configHermanoyFamilia(hid:string, fid:string){
     //Actualizacion en lotes del atributo id del hermano y tieneintegrantes de familia
     var batch = this.dbT.batch();

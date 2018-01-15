@@ -3,7 +3,8 @@ import { IonicPage,
           NavController,
           NavParams,
           LoadingController,
-          Loading  } from 'ionic-angular';
+          Loading,
+          AlertController} from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
 import { FirestoreProvider } from '../../providers/firestore/firestore';
@@ -35,6 +36,7 @@ export class ProgramaSemanalPage {
               private navParams: NavParams,
               private modalCtrl:ModalController,
               private loadingCtrl:LoadingController,
+              private alertCtrl:AlertController,
               private firestoreService: FirestoreProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
       this.presentLoading("Cargando semanas...");
@@ -79,4 +81,22 @@ export class ProgramaSemanalPage {
       });
       this.loader.present();
     }
+    confirmarEliminar(){
+     let confirm = this.alertCtrl.create({
+       title: '¿Eliminar semana?',
+       message: '¿Esta seguro de que desea eliminar esta semana?',
+       buttons: [
+         {
+           text: 'NO'
+         },
+         {
+           text: 'Si',
+           handler: () => {
+            console.log("Se eliminara");
+           }
+         }
+       ]
+     });
+     confirm.present();
+   }
   }
