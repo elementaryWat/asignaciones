@@ -63,7 +63,8 @@ const environment = {
      backButtonText: '',
      modalEnter: 'modal-slide-in',
      modalLeave: 'modal-slide-out',
-     tabsPlacement: 'bottom'
+     tabsPlacement: 'bottom',
+     pageTransition: 'ios-transition'
    }
  ),
     AngularFireModule.initializeApp(environment.firebase),
