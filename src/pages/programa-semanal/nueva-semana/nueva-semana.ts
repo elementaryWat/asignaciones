@@ -57,18 +57,7 @@ export class NuevaSemanaPage {
       let suscripcion=this.firestoreService.existeSemana(this.myDate)
                            .subscribe(data=>{
                                       if (data.length==0){
-                                        this.firestoreService.agregarSemana(this.myDate, this.hastaFecha)
-                                                                            .then(function(docRef) {
-                                                                                // console.log("Documento escrito con ID: ", docRef.id);
-                                                                                context.presentToast("Se ha agregado la semana de manera exitosa");
-                                                                                context.loader.dismiss();
-                                                                                context.dismiss();
-                                                                            })
-                                                                            .catch(function(error) {
-                                                                                // console.error("Error añadiendo documento: ", error);
-                                                                                context.loader.dismiss();
-                                                                                context.presentToast("Hubo un error "+error);
-                                                                          });
+                                        this.agregandoSemana(context);
                                       }else{
                                         context.presentToast("Ya existe esta semana");
                                         context.loader.dismiss();
@@ -80,6 +69,19 @@ export class NuevaSemanaPage {
       this.presentToast("La semana debe empezar un lunes");
     }
 
+  }
+  async agregandoSemana(context:any)  {
+      try {
+        let docRef=await this.firestoreService.agregarSemana(this.myDate, this.hastaFecha);
+        await this.firestoreService.actualizarSid(docRef.id);
+        context.presentToast("Se ha agregado la semana de manera exitosa");
+        context.loader.dismiss();
+        context.dismiss();
+      }
+      catch(err) {
+        this.loader.dismiss();
+        this.presentToast("Ha ocurrido un error al agregar la semana: "+err);
+      }
   }
   dismiss() {
    this.viewCtrl.dismiss();

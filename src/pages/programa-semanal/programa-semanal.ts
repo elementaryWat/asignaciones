@@ -4,6 +4,8 @@ import { IonicPage,
           NavParams,
           LoadingController,
           Loading,
+          ToastController,
+          Toast,
           AlertController} from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
@@ -32,11 +34,13 @@ export class ProgramaSemanalPage {
   fechaLimInf:string;
   primerLunes:string;
   loader:Loading;
+  toast:Toast;
   loading:boolean=true;
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private modalCtrl:ModalController,
               private loadingCtrl:LoadingController,
+              private toastCtrl:ToastController,
               private alertCtrl:AlertController,
               private firestoreService: FirestoreSemanasProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
@@ -96,11 +100,40 @@ export class ProgramaSemanalPage {
        {
          text: 'Si',
          handler: () => {
-          console.log("Se eliminara");
+          this.eliminarSemana(semana);
          }
        }
      ]
    });
    confirm.present();
  }
+ async eliminarSemana(semana:Semana){
+   this.presentLoading("Eliminando semana...");
+   try{
+     await this.firestoreService.eliminarSemana(semana);
+     this.loader.dismiss();
+     this.presentToast("Se ha eliminado la semana de manera correcta");
+   }
+   catch(err){
+     this.loader.dismiss();
+     this.presentToast("Ha ocurrido un error al agregar la semana: "+err);
+   }
+ }
+ presentToast(mensaje:string) {
+   if (this.toast){
+     this.toast.dismiss();
+   }
+   this.toast = this.toastCtrl.create({
+       message: mensaje,
+       position: 'bottom',
+       showCloseButton:true,
+       closeButtonText:"OK"
+     });
+    this.toast.present();
+  }
+  ionViewDidLeave(){
+    if (this.toast){
+      this.toast.dismiss();
+    }
+  }
 }
