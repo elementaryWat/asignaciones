@@ -24,7 +24,10 @@ export class FirestoreTemasProvider {
     return this.firestoredb.collection<Tema>('temas').doc(tema.tid).update(tema);
   }
   obtenerTemas(){
-    return this.firestoredb.collection<Tema>('temas')
+    return this.firestoredb.collection<Tema>('temas', ref=> ref.orderBy('nombre'))
                            .valueChanges();
+  }
+  eliminarTema(tema:Tema):Promise<any>{
+    return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();
   }
 }

@@ -41,7 +41,8 @@ export class FirestoreHermanosProvider {
                             .valueChanges();
   }
   obtenerHermanosFamilia(fid:string){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('familia','==',fid))
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('familia','==',fid)
+                                                                      .orderBy('nombre'))
                            .valueChanges();
   }
   obtenerHermanosPorFamilia(){

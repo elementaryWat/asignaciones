@@ -7,7 +7,8 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Nuevo Tema</ion-title>
+    <ion-title *ngIf="operacion=='create'">Nuevo Tema</ion-title>
+    <ion-title *ngIf="operacion=='update'">{{ formTema.controls['nombre'].value}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -42,6 +43,10 @@
     <ion-item>
       <ion-label>Tiene titulo</ion-label>
       <ion-toggle formControlName="tituloSecundario"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tiene observaciones</ion-label>
+      <ion-toggle formControlName="observaciones"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>Duracion fija</ion-label>

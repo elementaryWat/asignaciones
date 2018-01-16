@@ -25,7 +25,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let tema of temas">
       <ion-item-options side="left">
-        <button ion-button color="danger">
+        <button ion-button color="danger" (click)="confirmarEliminar(tema)">
           <ion-icon name="trash"></ion-icon>
           Borrar
         </button>
