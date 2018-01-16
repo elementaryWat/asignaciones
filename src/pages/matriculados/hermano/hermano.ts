@@ -33,6 +33,7 @@ export class HermanoPage {
   suscripcion:Subscription;
   loader:Loading;
   toast:Toast;
+  valorI:string;
   constructor(private navParams:NavParams,
               private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
@@ -78,9 +79,9 @@ export class HermanoPage {
       'anciano':new FormControl(''),
     });
     this.formHermano.patchValue(this.hermano);
-    let valorI=this.formHermano.value;
+    this.valorI=this.formHermano.value;
     this.formHermano.valueChanges.subscribe(()=>{
-      this.cambioF=JSON.stringify(this.formHermano.value)!=JSON.stringify(valorI);
+      this.cambioF=JSON.stringify(this.formHermano.value)!=JSON.stringify(this.valorI);
     });
   }
   dismiss() {
@@ -127,6 +128,7 @@ export class HermanoPage {
    this.presentLoading(`Actualizando datos ${this.formHermano.value.nombre}...`);
    this.firestoreHProvider.actualizarHermano(this.formHermano.value)
                           .then(()=>{
+                            this.valorI=this.formHermano.value;
                             this.cambioF=false;
                             this.loader.dismiss();
                             this.presentToast(`Se actualizaron los datos de ${this.formHermano.value.nombre} de manera correcta`);

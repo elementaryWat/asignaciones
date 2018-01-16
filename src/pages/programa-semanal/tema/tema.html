@@ -36,6 +36,10 @@
       <ion-input formControlName="nombre"
        type="text"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label>Siempre presente</ion-label>
+      <ion-toggle formControlName="default"></ion-toggle>
+    </ion-item>
     <ion-item *ngIf="formTema.controls['tipo'].value=='estudiantil'">
       <ion-label>Con ayudante</ion-label>
       <ion-toggle formControlName="ayudante"></ion-toggle>

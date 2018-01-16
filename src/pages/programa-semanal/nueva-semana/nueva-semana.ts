@@ -7,9 +7,13 @@ import { IonicPage,
           Toast,
           LoadingController,
           Loading} from 'ionic-angular';
+import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
 import {FirestoreSemanasProvider} from '../../../providers/firestore-semanas/firestore-semanas';
 import * as moment from 'moment';
 import 'moment/locale/es';
+import {reuniones} from '../../../app/consts/reuniones.const';
+import {Subscription} from 'rxjs/Subscription';
+import {FormGroup, FormControl, Validators,FormArray} from '@angular/forms';
 
 /**
  * Generated class for the NuevaSemanaPage page.
@@ -30,18 +34,48 @@ export class NuevaSemanaPage {
   fechaMaxima:string;
   toast:Toast;
   loader:Loading;
+  REUNIONES=reuniones;
+  suscReun:Subscription[]=[];
+  formTemas:FormGroup;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl:ViewController,
               private toastCtrl: ToastController,
               private loadingCtrl: LoadingController,
-              public firestoreService:FirestoreSemanasProvider) {
+              private firestoreService:FirestoreSemanasProvider,
+              private firestoreTProvider:FirestoreTemasProvider) {
         this.primerLunes=moment().day(1).format("YYYY-MM-DD");
         this.fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
         // console.log(this.primerLunes);
         // console.log(this.fechaMaxima);
+        this.crearForm();
+        this.resetTemas();
+        for(let idx in this.REUNIONES){
+          this.REUNIONES[idx].susc=this.firestoreTProvider.obtenerTemasReunion(this.REUNIONES[idx].value).subscribe(temas=>{
+            this.REUNIONES[idx].temas=temas;
+            for (let tema of temas){
+              this.formTemas.addControl(tema.tid,new FormControl(tema.default));
+              // console.log(tema.nombre);
+            }
+          })
+        }
   }
+  resetTemas(){
+    for (let idx in this.REUNIONES){
+      this.REUNIONES[idx].temas=[];
+    }
+  }
+  crearForm(){
+    this.formTemas=new FormGroup({});
+    // this.formTema.patchValue(this.tema);
+    // let valorI=this.formTema.value;
+    // this.formTema.valueChanges.subscribe(()=>{
+    //   this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(valorI);
+    // });
+  }
+  agregarAsignaciones(){
 
+  }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad NuevaSemanaPage');
     //console.log('Semana'+this.navParams.get('fechaDesde'));

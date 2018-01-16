@@ -5,6 +5,7 @@ export interface Tema{
   nombre:string,
   ayudante:boolean,
   tituloSecundario:boolean,
+  default:boolean,
   observaciones:boolean,
   duracionFija:boolean,
   duracion:number,

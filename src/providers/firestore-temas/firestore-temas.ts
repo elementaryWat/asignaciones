@@ -27,6 +27,11 @@ export class FirestoreTemasProvider {
     return this.firestoredb.collection<Tema>('temas', ref=> ref.orderBy('nombre'))
                            .valueChanges();
   }
+  obtenerTemasReunion(reunion:string){
+    return this.firestoredb.collection<Tema>('temas', ref=> ref.where('reunion','==',reunion)
+                                                               .orderBy('nombre'))
+                           .valueChanges();
+  }
   eliminarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();
   }

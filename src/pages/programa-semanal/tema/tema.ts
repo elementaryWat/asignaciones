@@ -8,7 +8,7 @@ import { IonicPage,
          Toast} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Tema} from '../../../app/interfaces/tema.interface';
-import {REUNIONES} from '../../../app/consts/reuniones.const';
+import {reuniones} from '../../../app/consts/reuniones.const';
 import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
 
 /**
@@ -30,7 +30,8 @@ export class TemaPage {
   toast:Toast;
   loader:Loading;
   operacion:string;
-  REUNIONES=REUNIONES;
+  REUNIONES=reuniones;
+  valorI:string;
   constructor(private firestoreTProvider:FirestoreTemasProvider,
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController,
@@ -41,6 +42,7 @@ export class TemaPage {
         this.tema={
           tipo:'otra',
           reunion:'tesoros',
+          default:false,
           nombre:'',
           ayudante:false,
           tituloSecundario:false,
@@ -65,6 +67,7 @@ export class TemaPage {
     this.formTema=new FormGroup({
       'tid':new FormControl(''),
       'reunion':new FormControl('',Validators.required),
+      'default':new FormControl(''),
       'tipo':new FormControl(''),
       'nombre':new FormControl('',Validators.required),
       'ayudante':new FormControl(''),
@@ -76,9 +79,9 @@ export class TemaPage {
       'ancianos':new FormControl('')
     });
     this.formTema.patchValue(this.tema);
-    let valorI=this.formTema.value;
+    this.valorI=this.formTema.value;
     this.formTema.valueChanges.subscribe(()=>{
-      this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(valorI);
+      this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(this.valorI);
     });
     this.formTema.controls['reunion'].valueChanges.subscribe(value=>{
       if(value=="vidacristiana"){
@@ -119,6 +122,8 @@ export class TemaPage {
   actualizarTema(){
     this.presentLoading("Actualizando tema...");
     this.firestoreTProvider.actualizarTema(this.formTema.value).then(()=>{
+                              this.valorI=this.formTema.value;
+                              this.cambioF=false;
                               this.loader.dismiss();
                               this.presentToast("Se actualizó el tema de manera exitosa");
                             }).catch((error)=>{

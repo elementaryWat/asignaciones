@@ -28,5 +28,17 @@
     <ion-datetime displayFormat="DD/MM/YYYY" disabled [(ngModel)]="hastaFecha">
     </ion-datetime>
   </ion-item>
+  <form (ngSubmit)="agregarAsignaciones()" [formGroup]="formTemas">
+    <ion-item-group *ngFor="let reunion of REUNIONES">
+      <ion-item-divider color="light"><h2>{{reunion.nombre}}</h2></ion-item-divider>
+      <ion-item *ngFor="let tema of reunion.temas">
+        <ion-label>{{tema.nombre}}</ion-label>
+        <ion-toggle [disabled]="tema.default" [formControlName]="tema.tid"></ion-toggle>
+      </ion-item>
+    </ion-item-group>
+    <br>
+    <button *ngIf="operacion=='create'" [disabled]="formTema.invalid"
+     ion-button outline round block type="submit">Agregar</button>
+  </form>
   <button type="button" ion-button block outline round (click)="agregarSemana(this)">Agregar semana</button>
 </ion-content>
