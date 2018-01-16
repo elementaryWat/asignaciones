@@ -8,6 +8,7 @@ import { IonicPage,
          Toast} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Tema} from '../../../app/interfaces/tema.interface';
+import {REUNIONES} from '../../../app/consts/reuniones.const';
 import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
 
 /**
@@ -29,6 +30,7 @@ export class TemaPage {
   toast:Toast;
   loader:Loading;
   operacion:string;
+  REUNIONES=REUNIONES;
   constructor(private firestoreTProvider:FirestoreTemasProvider,
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController,

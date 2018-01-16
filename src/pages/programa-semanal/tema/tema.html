@@ -19,10 +19,7 @@
       <ion-label>Reunion</ion-label>
       <ion-select formControlName="reunion"
                    okText="Ok" cancelText="Cancelar">
-                   <ion-option value="tesoros">Tesoros de la biblia</ion-option>
-                   <ion-option value="maestros">Seamos mejores maestros</ion-option>
-                   <ion-option value="vidacristiana">Nuestra vida cristiana</ion-option>
-                   <ion-option value="atalaya">Estudio de la Atalaya</ion-option>
+                   <ion-option [value]="reunion.value" *ngFor="let reunion of REUNIONES">{{reunion.nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="formTema.controls['reunion'].value=='tesoros' || formTema.controls['reunion'].value=='maestros'">
