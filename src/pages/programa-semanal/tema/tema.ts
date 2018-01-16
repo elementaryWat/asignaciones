@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import { IonicPage,
+         NavController,
+         NavParams,
+         LoadingController,
+         Loading,
+         ToastController,
+         Toast} from 'ionic-angular';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Tema} from '../../../app/interfaces/tema.interface';
+import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
+
 /**
  * Generated class for the TemaPage page.
  *
@@ -15,20 +23,35 @@ import {Tema} from '../../../app/interfaces/tema.interface';
   templateUrl: 'tema.html',
 })
 export class TemaPage {
-  formAsignacion:FormGroup;
+  formTema:FormGroup;
   cambioF:boolean;
   tema:Tema;
-  constructor() {
-    this.tema={
-      tipo:'otra',
-      nombre:'',
-      ayudante:false,
-      tituloSecundario:false,
-      duracionFija:true,
-      duracion:5,
-      siervosNombrados:true,
-      ancianos:false
-    };
+  toast:Toast;
+  loader:Loading;
+  operacion:string;
+  constructor(private firestoreTProvider:FirestoreTemasProvider,
+              private loadingCtrl:LoadingController,
+              private toastCtrl:ToastController,
+              private navParams:NavParams) {
+    this.operacion=this.navParams.get("operacion");
+    switch(this.operacion){
+      case 'create':
+        this.tema={
+          tipo:'otra',
+          reunion:'tesoros',
+          nombre:'',
+          ayudante:false,
+          tituloSecundario:false,
+          duracionFija:true,
+          duracion:5,
+          siervosNombrados:false,
+          ancianos:false
+        };
+        break;
+      case 'update':
+        this.tema=this.navParams.get('tema');
+        break;
+    }
     this.crearForm();
   }
 
@@ -36,8 +59,10 @@ export class TemaPage {
   //   console.log('ionViewDidLoad TemaPage');
   // }
   crearForm(){
-    this.formAsignacion=new FormGroup({
-      'tipo':new FormControl('',Validators.required),
+    this.formTema=new FormGroup({
+      'tid':new FormControl(''),
+      'reunion':new FormControl('',Validators.required),
+      'tipo':new FormControl(''),
       'nombre':new FormControl('',Validators.required),
       'ayudante':new FormControl(''),
       'tituloSecundario':new FormControl(''),
@@ -46,16 +71,78 @@ export class TemaPage {
       'siervosNombrados':new FormControl(''),
       'ancianos':new FormControl('')
     });
-    this.formAsignacion.patchValue(this.tema);
-    // let valorI=this.formAsignacion.value;
-    // this.formAsignacion.valueChanges.subscribe(()=>{
-    //   this.cambioF=JSON.stringify(this.formAsignacion.value)!=JSON.stringify(valorI);
-    // });
+    this.formTema.patchValue(this.tema);
+    let valorI=this.formTema.value;
+    this.formTema.valueChanges.subscribe(()=>{
+      this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(valorI);
+    });
+    this.formTema.controls['reunion'].valueChanges.subscribe(value=>{
+      if(value=="vidacristiana"){
+        this.formTema.controls['tipo'].setValue('otra');
+      }
+    });
+    this.formTema.controls['tipo'].valueChanges.subscribe(value=>{
+      if(value=="estudiantil"){
+        this.formTema.controls['siervosNombrados'].setValue(false);
+        this.formTema.controls['ancianos'].setValue(false);
+      }
+    });
+    this.formTema.controls['siervosNombrados'].valueChanges.subscribe(value=>{
+      if(!value){
+        this.formTema.controls['ancianos'].setValue(false);
+      }
+    });
   }
   establecerTipo(){
 
   }
   agregarTema(){
-    console.log(this.formAsignacion);
+    this.presentLoading("Agregando tema...");
+    this.firestoreTProvider.agregarTema(this.formTema.value).then((docRef)=>{
+      this.firestoreTProvider.actualizarTid(docRef).then(()=>{
+        this.loader.dismiss();
+        this.presentToast("Se agrego el tema de manera exitosa");
+      }).catch((error)=>{
+        this.loader.dismiss();
+        this.presentToast(`Ha ocurrido un error: ${error}. Elimine el tema y agreguelo de vuelta`);
+      });
+    })
+    .catch(error=>{
+      this.loader.dismiss();
+      this.presentToast("Ha ocurrido un error al agregar: "+error);
+    });
   }
+  actualizarTema(){
+    this.presentLoading("Actualizando tema...");
+    this.firestoreTProvider.actualizarTema(this.formTema.value).then(()=>{
+                              this.loader.dismiss();
+                              this.presentToast("Se actualizó el tema de manera exitosa");
+                            }).catch((error)=>{
+                              this.loader.dismiss();
+                              this.presentToast("Ha ocurrido un error al actualizar: "+error);
+                            });
+  }
+  presentToast(mensaje:string) {
+    if (this.toast){
+      this.toast.dismiss();
+    }
+    this.toast = this.toastCtrl.create({
+        message: mensaje,
+        position: 'bottom',
+        showCloseButton:true,
+        closeButtonText:"OK"
+      });
+     this.toast.present();
+   }
+   presentLoading(mensaje:string) {
+     this.loader = this.loadingCtrl.create({
+       content: mensaje
+     });
+     this.loader.present();
+   }
+   ionViewDidLeave(){
+     if (this.toast){
+       this.toast.dismiss();
+     }
+   }
 }

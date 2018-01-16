@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
+import {Tema} from '../../app/interfaces/tema.interface';
 
 /*
   Generated class for the TemasProvider provider.
@@ -10,8 +11,20 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class FirestoreTemasProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello TemasProvider Provider');
-  }
+  constructor(private firestoredb:AngularFirestore) {
 
+  }
+  agregarTema(tema:Tema):Promise<any>{
+    return this.firestoredb.collection<Tema>('temas').add(tema);
+  }
+  actualizarTid(docRef:any){
+    return this.firestoredb.collection<Tema>('temas').doc(docRef.id).update({tid:docRef.id});
+  }
+  actualizarTema(tema:Tema):Promise<any>{
+    return this.firestoredb.collection<Tema>('temas').doc(tema.tid).update(tema);
+  }
+  obtenerTemas(){
+    return this.firestoredb.collection<Tema>('temas')
+                           .valueChanges();
+  }
 }

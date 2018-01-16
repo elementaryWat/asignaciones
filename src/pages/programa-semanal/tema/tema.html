@@ -14,11 +14,20 @@
 
 
 <ion-content padding>
-  <form (ngSubmit)="agregarTema()" [formGroup]="formAsignacion">
+  <form (ngSubmit)="agregarTema()" [formGroup]="formTema">
     <ion-item>
+      <ion-label>Reunion</ion-label>
+      <ion-select formControlName="reunion"
+                   okText="Ok" cancelText="Cancelar">
+                   <ion-option value="tesoros">Tesoros de la biblia</ion-option>
+                   <ion-option value="maestros">Seamos mejores maestros</ion-option>
+                   <ion-option value="vidacristiana">Nuestra vida cristiana</ion-option>
+                   <ion-option value="atalaya">Estudio de la Atalaya</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="formTema.controls['reunion'].value=='tesoros' || formTema.controls['reunion'].value=='maestros'">
       <ion-label>Tipo</ion-label>
       <ion-select formControlName="tipo"
-                   (ionChange)="establecerTipo()"
                    okText="Ok" cancelText="Cancelar">
                    <ion-option value="estudiantil">Estudiantil</ion-option>
                    <ion-option value="otra">Otra</ion-option>
@@ -29,7 +38,7 @@
       <ion-input formControlName="nombre"
        type="text"></ion-input>
     </ion-item>
-    <ion-item *ngIf="formAsignacion.controls['tipo'].value=='estudiantil'">
+    <ion-item *ngIf="formTema.controls['tipo'].value=='estudiantil'">
       <ion-label>Con ayudante</ion-label>
       <ion-toggle formControlName="ayudante"></ion-toggle>
     </ion-item>
@@ -41,21 +50,24 @@
       <ion-label>Duracion fija</ion-label>
       <ion-toggle formControlName="duracionFija"></ion-toggle>
     </ion-item>
-    <ion-item *ngIf="formAsignacion.controls['duracionFija'].value">
+    <ion-item *ngIf="formTema.controls['duracionFija'].value">
       <ion-label floating>Duracion</ion-label>
       <ion-input formControlName="duracion"
        type="number"></ion-input>
     </ion-item>
-    <ion-item *ngIf="formAsignacion.controls['tipo'].value=='otra'">>
+    <ion-item *ngIf="formTema.controls['tipo'].value=='otra'">>
       <ion-label>Solo siervos nombrados</ion-label>
       <ion-toggle formControlName="siervosNombrados"></ion-toggle>
     </ion-item>
-    <ion-item *ngIf="formAsignacion.controls['tipo'].value=='otra' && formAsignacion.controls['siervosNombrados'].value">>
+    <ion-item *ngIf="formTema.controls['tipo'].value=='otra' && formTema.controls['siervosNombrados'].value">>
       <ion-label>Solo ancianos</ion-label>
       <ion-toggle formControlName="ancianos"></ion-toggle>
     </ion-item>
     <br>
-    <button [disabled]="formAsignacion.invalid"
+    <button *ngIf="operacion=='create'" [disabled]="formTema.invalid"
      ion-button outline round block type="submit">Agregar</button>
   </form>
+  <ion-fab right bottom *ngIf="operacion=='update' && cambioF && formTema.dirty && formTema.valid">
+    <button ion-fab (click)="actualizarTema()" type="button"> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
+  </ion-fab>
 </ion-content>

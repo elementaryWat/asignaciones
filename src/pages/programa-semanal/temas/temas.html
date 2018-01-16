@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-  <ion-grid class="text-center caja-vacia">
+  <ion-grid class="text-center caja-vacia" *ngIf="!loading && temas.length==0">
     <ion-row>
       <ion-col  align="center">
         <ion-icon ios="ios-list-box" md="md-list-box" class="icono-grande"></ion-icon>
@@ -22,6 +22,19 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-list>
+    <ion-item-sliding *ngFor="let tema of temas">
+      <ion-item-options side="left">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Borrar
+        </button>
+      </ion-item-options>
+      <button ion-item (click)="cargarTema(tema)">
+        {{ tema.nombre}}
+      </button>
+    </ion-item-sliding>
+  </ion-list>
   <ion-fab right bottom (click)="irANuevoTema()">
     <button ion-fab color="primary"><ion-icon ios="ios-add" md="md-add"></ion-icon></button>
   </ion-fab>
