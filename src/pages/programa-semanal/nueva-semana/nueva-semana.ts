@@ -53,10 +53,10 @@ export class NuevaSemanaPage {
         this.firestoreTProvider.obtenerTemasPorReunion();
         this.firestoreTProvider.temasPorReu.subscribe(reuniones=>{
           this.reuniones=reuniones;
-          console.log(this.reuniones);
+          // console.log(this.reuniones);
           for(let idx in this.reuniones){
             for (let tema of this.reuniones[idx].temas){
-              this.formTemas.addControl(tema.tid,new FormControl({value:tema.default,disabled:tema.default}));
+              this.formTemas.addControl(tema.tid,new FormControl(tema.default));
             }
           }
         })
@@ -70,7 +70,12 @@ export class NuevaSemanaPage {
     // });
   }
   agregarAsignaciones(){
-
+    for (let idx in this.formTemas.controls)
+    {
+      if(this.formTemas.controls[idx].value){
+        console.log("Se agregara a "+idx);
+      }
+    }
   }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad NuevaSemanaPage');
@@ -104,6 +109,7 @@ export class NuevaSemanaPage {
       try {
         let docRef=await this.firestoreService.agregarSemana(this.myDate, this.hastaFecha);
         await this.firestoreService.actualizarSid(docRef.id);
+        this.agregarAsignaciones();
         context.presentToast("Se ha agregado la semana de manera exitosa");
         context.loader.dismiss();
         context.dismiss();

@@ -46,6 +46,7 @@ export class HermanoPage {
             this.hermano={
               nombre:'',
               userId:'',
+              genero:'',
               fechaNacimiento:'',
               telefono:'',
               familia:'',
@@ -71,6 +72,7 @@ export class HermanoPage {
       'familia':new FormControl('',Validators.required),
       'hid':new FormControl(''),
       'nombre':new FormControl('',Validators.required),
+      'genero':new FormControl(''),
       'telefono':new FormControl(''),
       'publicador':new FormControl(''),
       'bautizado':new FormControl(''),
@@ -82,6 +84,37 @@ export class HermanoPage {
     this.valorI=this.formHermano.value;
     this.formHermano.valueChanges.subscribe(()=>{
       this.cambioF=JSON.stringify(this.formHermano.value)!=JSON.stringify(this.valorI);
+    });
+    this.formHermano.controls['genero'].valueChanges.subscribe(value=>{
+      if(value=='femenino'){
+        this.formHermano.controls['siervoMinisterial'].setValue(false);
+        this.formHermano.controls['anciano'].setValue(false);
+      }
+    });
+    this.formHermano.controls['publicador'].valueChanges.subscribe(value=>{
+      if(!value){
+        this.formHermano.controls['bautizado'].setValue(false);
+        this.formHermano.controls['precursorRegular'].setValue(false);
+        this.formHermano.controls['siervoMinisterial'].setValue(false);
+        this.formHermano.controls['anciano'].setValue(false);
+      }
+    });
+    this.formHermano.controls['bautizado'].valueChanges.subscribe(value=>{
+      if(!value){
+        this.formHermano.controls['precursorRegular'].setValue(false);
+        this.formHermano.controls['siervoMinisterial'].setValue(false);
+        this.formHermano.controls['anciano'].setValue(false);
+      }
+    });
+    this.formHermano.controls['siervoMinisterial'].valueChanges.subscribe(value=>{
+      if(value){
+        this.formHermano.controls['anciano'].setValue(false);
+      }
+    });
+    this.formHermano.controls['anciano'].valueChanges.subscribe(value=>{
+      if(value){
+        this.formHermano.controls['siervoMinisterial'].setValue(false);
+      }
     });
   }
   dismiss() {
@@ -96,6 +129,7 @@ export class HermanoPage {
                 this.hermano={
                   nombre:'',
                   userId:'',
+                  genero:'',
                   fechaNacimiento:'',
                   telefono:'',
                   familia:'',
@@ -159,31 +193,6 @@ export class HermanoPage {
       });
      this.toast.present();
    }
-  setAFalsoP(){
-    if(!this.formHermano.controls['publicador'].value){
-      this.formHermano.controls['bautizado'].setValue(false);
-      this.formHermano.controls['precursorRegular'].setValue(false);
-      this.formHermano.controls['siervoMinisterial'].setValue(false);
-      this.formHermano.controls['anciano'].setValue(false);
-    }
-  }
-  setAFalsoB(){
-    if(!this.formHermano.controls['bautizado'].value){
-      this.formHermano.controls['precursorRegular'].setValue(false);
-      this.formHermano.controls['siervoMinisterial'].setValue(false);
-      this.formHermano.controls['anciano'].setValue(false);
-    }
-  }
-  setAFalsoS(){
-    if(this.formHermano.controls['siervoMinisterial'].value){
-      this.formHermano.controls['anciano'].setValue(false);
-    }
-  }
-  setAFalsoA(){
-    if(this.formHermano.controls['anciano'].value){
-      this.formHermano.controls['siervoMinisterial'].setValue(false);
-    }
-  }
   ionViewWillUnload(){
     if (this.toast){
       this.toast.dismiss();

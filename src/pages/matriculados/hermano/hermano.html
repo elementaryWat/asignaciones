@@ -35,33 +35,38 @@
      type="text"></ion-input>
   </ion-item>
   <ion-item>
+    <ion-label>Género</ion-label>
+    <ion-select formControlName="genero"
+                  interface="popover"
+                 okText="Ok" cancelText="Cancelar">
+      <ion-option value="masculino">Masculino</ion-option>
+      <ion-option value="femenino">Femenino</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
     <ion-label floating>Telefono celular</ion-label>
     <ion-input formControlName="telefono"
      type="number"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Publicador</ion-label>
-    <ion-toggle formControlName="publicador"
-                (ionChange)="setAFalsoP()"></ion-toggle>
+    <ion-toggle formControlName="publicador"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="formHermano.controls['publicador'].value">
     <ion-label>Bautizado</ion-label>
-    <ion-toggle formControlName="bautizado"
-                (ionChange)="setAFalsoB()"></ion-toggle>
+    <ion-toggle formControlName="bautizado"></ion-toggle>
   </ion-item>
   <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
     <ion-label>Precursor Regular</ion-label>
     <ion-toggle formControlName="precursorRegular"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
+  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['genero'].value=='masculino' && formHermano.controls['bautizado'].value">
     <ion-label>Siervo Ministerial</ion-label>
-    <ion-toggle formControlName="siervoMinisterial"
-                (ionChange)="setAFalsoS()"></ion-toggle>
+    <ion-toggle formControlName="siervoMinisterial"></ion-toggle>
   </ion-item>
-  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['bautizado'].value">
+  <ion-item *ngIf="formHermano.controls['publicador'].value && formHermano.controls['genero'].value=='masculino' && formHermano.controls['bautizado'].value">
     <ion-label>Anciano</ion-label>
-    <ion-toggle formControlName="anciano"
-                (ionChange)="setAFalsoA()"></ion-toggle>
+    <ion-toggle formControlName="anciano"></ion-toggle>
   </ion-item>
   <br>
   <button *ngIf="operacion=='create'" [disabled]="!formHermano.valid"
