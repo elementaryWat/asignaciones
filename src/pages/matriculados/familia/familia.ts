@@ -6,6 +6,7 @@ import { IonicPage,
           NavController,
           NavParams,
           ViewController,
+          AlertController,
           ToastController,
           Toast,
           LoadingController,
@@ -14,6 +15,7 @@ import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/f
 import {AuthProvider} from '../../../providers/auth/auth';
 import {Subscription} from 'rxjs/Subscription';
 import {Familia} from '../../../app/interfaces/familia.interface';
+import {Hermano} from '../../../app/interfaces/hermano.interface';
 /**
  * Generated class for the NuevaFamiliaPage page.
  *
@@ -41,6 +43,7 @@ export class FamiliaPage {
               private firestoreHProvider:FirestoreHermanosProvider,
               private authProvider:AuthProvider,
               private toastCtrl:ToastController,
+              private alertCtrl:AlertController,
               private loadingCtrl:LoadingController) {
         this.suscripcion=this.firestoreHProvider.obtenerFamilias().subscribe(familias=>{
           this.familias=familias;
@@ -125,6 +128,53 @@ export class FamiliaPage {
    this.content.scrollToTop();
    this.operacion="update";
  }
+ confirmarEliminar(familia:Familia){
+  let confirm = this.alertCtrl.create({
+    title: '¿Eliminar familia?',
+    message: `¿Esta seguro de que desea eliminar a la familia ${familia.apellido}?`,
+    buttons: [
+      {
+        text: 'NO'
+      },
+      {
+        text: 'Si',
+        handler: () => {
+          this.presentLoading("Eliminando familia...");
+          let susc=this.firestoreHProvider.obtenerHermanosFamilia(familia.fid).subscribe(hermanos=>{
+              this.eliminarIntegrantesFamilia(hermanos,familia);
+              susc.unsubscribe();
+          });
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
+async eliminarIntegrantesFamilia(hermanos:Hermano[],familia:Familia){
+  this.loader.dismiss();
+  this.presentLoading("Eliminando integrantes...");
+  try{
+    for (let hermano of hermanos){
+      await this.firestoreHProvider.eliminarHermano(hermano);
+    }
+    this.eliminarFamilia(familia);
+  }
+  catch(err){
+    this.loader.dismiss();
+    this.presentToast("Ha ocurrido un error al eliminar los integrantes: "+err);
+  }
+}
+async eliminarFamilia(familia:Familia){
+  try{
+    await this.firestoreHProvider.eliminarFamilia(familia);
+    this.loader.dismiss();
+    this.presentToast("Se ha eliminado la familia de manera correcta");
+  }
+  catch(err){
+    this.loader.dismiss();
+    this.presentToast("Ha ocurrido un error al eliminar la familia: "+err);
+  }
+}
  presentToast(mensaje:string) {
    if (this.toast){
      this.toast.dismiss();

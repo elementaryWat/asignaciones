@@ -47,6 +47,7 @@ export class TemaPage {
           ayudante:false,
           tituloSecundario:false,
           observaciones:false,
+          tieneDuracion:true,
           duracionFija:true,
           duracion:5,
           siervosNombrados:false,
@@ -76,6 +77,7 @@ export class TemaPage {
       'ayudante':new FormControl(''),
       'tituloSecundario':new FormControl(''),
       'observaciones':new FormControl(''),
+      'tieneDuracion':new FormControl(''),
       'duracionFija':new FormControl(''),
       'duracion':new FormControl(''),
       'siervosNombrados':new FormControl(''),
@@ -85,6 +87,12 @@ export class TemaPage {
     this.valorI=this.formTema.value;
     this.formTema.valueChanges.subscribe(()=>{
       this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(this.valorI);
+    });
+    this.formTema.controls['tieneDuracion'].valueChanges.subscribe(value=>{
+      if(!value){
+        this.formTema.controls['duracionFija'].setValue(false);
+        this.formTema.controls['duracion'].setValue(5);
+      }
     });
     this.formTema.controls['reunion'].valueChanges.subscribe(value=>{
       if(value=="vidacristiana"){

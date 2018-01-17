@@ -72,7 +72,7 @@ export class HermanoPage {
       'familia':new FormControl('',Validators.required),
       'hid':new FormControl(''),
       'nombre':new FormControl('',Validators.required),
-      'genero':new FormControl(''),
+      'genero':new FormControl('',Validators.required),
       'telefono':new FormControl(''),
       'publicador':new FormControl(''),
       'bautizado':new FormControl(''),

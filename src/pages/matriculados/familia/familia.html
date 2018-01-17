@@ -48,7 +48,7 @@
           {{fam.apellido}}
         </ion-item>
         <ion-item-options side="left">
-          <button ion-button color="danger">
+          <button ion-button color="danger" (click)="confirmarEliminar(fam)">
             <ion-icon name="trash"></ion-icon>
             Borrar
           </button>

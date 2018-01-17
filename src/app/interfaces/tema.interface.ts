@@ -7,6 +7,7 @@ export interface Tema{
   tituloSecundario:boolean,
   default:boolean,
   observaciones:boolean,
+  tieneDuracion:boolean,
   duracionFija:boolean,
   duracion:number,
   siervosNombrados:boolean,

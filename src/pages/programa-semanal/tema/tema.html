@@ -20,7 +20,7 @@
       <ion-label>Reunion</ion-label>
       <ion-select formControlName="reunion"
                    okText="Ok" cancelText="Cancelar">
-                   <ion-option [value]="reunion.value" *ngFor="let reunion of REUNIONES">{{reunion.nombre}}</ion-option>
+                   <ion-option [value]="reunion.value" *ngFor="let reunion of reuniones">{{reunion.nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="formTema.controls['reunion'].value=='tesoros' || formTema.controls['reunion'].value=='maestros'">
@@ -53,6 +53,10 @@
       <ion-toggle formControlName="observaciones"></ion-toggle>
     </ion-item>
     <ion-item>
+      <ion-label>Tiene duracion</ion-label>
+      <ion-toggle formControlName="tieneDuracion"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="formTema.controls['tieneDuracion'].value">
       <ion-label>Duracion fija</ion-label>
       <ion-toggle formControlName="duracionFija"></ion-toggle>
     </ion-item>

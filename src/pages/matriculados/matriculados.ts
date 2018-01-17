@@ -39,14 +39,22 @@ export class MatriculadosPage {
               private toastCtrl:ToastController,
               private alertCtrl:AlertController) {
       this.presentLoading("Cargando hermanos..");
-      this.firestoreHProvider.obtenerHermanosPorFamilia();
-      this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
-        if (this.loading){
+      let suscFam=this.firestoreHProvider.obtenerFamiliasConIntegrantes().subscribe(familias=>{
+        if(familias.length>0){
+          this.firestoreHProvider.obtenerHermanosPorFamilia();
+          this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
+            if (this.loading){
+              this.loader.dismiss();
+              this.loading=false;
+            }
+            this.familias=familias;
+          });
+        }else{
           this.loader.dismiss();
           this.loading=false;
         }
-        this.familias=familias;
-      });
+        suscFam.unsubscribe();
+      })
   }
 
   // ionViewDidLoad() {

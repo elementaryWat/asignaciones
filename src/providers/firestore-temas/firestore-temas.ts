@@ -73,6 +73,9 @@ export class FirestoreTemasProvider {
         }
     });
   }
+  crearAsignacion(){
+    
+  }
   eliminarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();
   }

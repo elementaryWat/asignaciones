@@ -116,7 +116,7 @@ export class ProgramaSemanalPage {
    }
    catch(err){
      this.loader.dismiss();
-     this.presentToast("Ha ocurrido un error al agregar la semana: "+err);
+     this.presentToast("Ha ocurrido un error al eliminar la semana: "+err);
    }
  }
  presentToast(mensaje:string) {

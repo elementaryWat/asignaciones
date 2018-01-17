@@ -86,6 +86,9 @@ export class FirestoreHermanosProvider {
   actualizarfamilia(familia:Familia):Promise<any>{
     return this.firestoredb.collection<Hermano>('familias').doc(familia.fid).update(familia);
   }
+  eliminarFamilia(familia:Familia):Promise<any>{
+    return this.firestoredb.collection<Familia>('familias').doc(familia.fid).delete();
+  }
   actualizarFid(docRef:any){
     return this.firestoredb.collection<Familia>('familias').doc(docRef.id).update({fid:docRef.id});
   }
