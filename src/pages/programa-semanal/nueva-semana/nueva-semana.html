@@ -29,11 +29,11 @@
     </ion-datetime>
   </ion-item>
   <form (ngSubmit)="agregarAsignaciones()" [formGroup]="formTemas">
-    <ion-item-group *ngFor="let reunion of REUNIONES">
+    <ion-item-group *ngFor="let reunion of reuniones">
       <ion-item-divider color="light"><h2>{{reunion.nombre}}</h2></ion-item-divider>
       <ion-item *ngFor="let tema of reunion.temas">
         <ion-label>{{tema.nombre}}</ion-label>
-        <ion-toggle [disabled]="tema.default" [formControlName]="tema.tid"></ion-toggle>
+        <ion-toggle [formControlName]="tema.tid"></ion-toggle>
       </ion-item>
     </ion-item-group>
     <br>

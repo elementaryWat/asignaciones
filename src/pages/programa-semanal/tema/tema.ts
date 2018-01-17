@@ -8,7 +8,7 @@ import { IonicPage,
          Toast} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Tema} from '../../../app/interfaces/tema.interface';
-import {reuniones} from '../../../app/consts/reuniones.const';
+import {Reunion} from '../../../app/interfaces/reunion.interface';
 import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
 
 /**
@@ -30,8 +30,8 @@ export class TemaPage {
   toast:Toast;
   loader:Loading;
   operacion:string;
-  REUNIONES=reuniones;
   valorI:string;
+  reuniones:Reunion[]=[];
   constructor(private firestoreTProvider:FirestoreTemasProvider,
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController,
@@ -57,6 +57,9 @@ export class TemaPage {
         this.tema=this.navParams.get('tema');
         break;
     }
+    this.firestoreTProvider.obtenerReuniones().subscribe(reuniones=>{
+      this.reuniones=reuniones;
+    });
     this.crearForm();
   }
 

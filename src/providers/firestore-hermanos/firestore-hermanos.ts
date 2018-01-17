@@ -52,8 +52,8 @@ export class FirestoreHermanosProvider {
       this.familias=[];
       this.famMap.clear();
       if (this.suscripcionesFam.length>0){
-        for (let suscripcion of this.suscripcionesFam){
-          suscripcion.unsubscribe();
+        for (let idx in this.suscripcionesFam){
+          this.suscripcionesFam[idx].unsubscribe();
         }
         this.suscripcionesFam=[];
       }

@@ -11,8 +11,10 @@ import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firesto
 import {FirestoreSemanasProvider} from '../../../providers/firestore-semanas/firestore-semanas';
 import * as moment from 'moment';
 import 'moment/locale/es';
-import {reuniones} from '../../../app/consts/reuniones.const';
+import {Reunion} from '../../../app/interfaces/reunion.interface';
+import {ReunionConTemas} from '../../../app/interfaces/reunionConTemas.interface';
 import {Subscription} from 'rxjs/Subscription';
+import {Subject} from 'rxjs/Subject';
 import {FormGroup, FormControl, Validators,FormArray} from '@angular/forms';
 
 /**
@@ -34,8 +36,7 @@ export class NuevaSemanaPage {
   fechaMaxima:string;
   toast:Toast;
   loader:Loading;
-  REUNIONES=reuniones;
-  suscReun:Subscription[]=[];
+  reuniones:ReunionConTemas[]=[];
   formTemas:FormGroup;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -49,21 +50,16 @@ export class NuevaSemanaPage {
         // console.log(this.primerLunes);
         // console.log(this.fechaMaxima);
         this.crearForm();
-        this.resetTemas();
-        for(let idx in this.REUNIONES){
-          this.REUNIONES[idx].susc=this.firestoreTProvider.obtenerTemasReunion(this.REUNIONES[idx].value).subscribe(temas=>{
-            this.REUNIONES[idx].temas=temas;
-            for (let tema of temas){
-              this.formTemas.addControl(tema.tid,new FormControl(tema.default));
-              // console.log(tema.nombre);
+        this.firestoreTProvider.obtenerTemasPorReunion();
+        this.firestoreTProvider.temasPorReu.subscribe(reuniones=>{
+          this.reuniones=reuniones;
+          console.log(this.reuniones);
+          for(let idx in this.reuniones){
+            for (let tema of this.reuniones[idx].temas){
+              this.formTemas.addControl(tema.tid,new FormControl({value:tema.default,disabled:tema.default}));
             }
-          })
-        }
-  }
-  resetTemas(){
-    for (let idx in this.REUNIONES){
-      this.REUNIONES[idx].temas=[];
-    }
+          }
+        })
   }
   crearForm(){
     this.formTemas=new FormGroup({});
