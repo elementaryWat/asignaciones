@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Usuario} from '../../app/clases/User.class';
 import {Credencial} from '../../app/interfaces/credencial.interface';
+import {Congregacion} from '../../app/interfaces/congregacion.interface';
 /*
   Generated class for the AuthProvider provider.
 
@@ -22,6 +23,10 @@ export class AuthProvider {
     const userColection = this.firestoredb.collection<Usuario>('usuarios');
     return this.firestoredb.collection('usuarios', ref => ref.where('email','==',credenciales.email)
                                                              .where('contraseña','==',credenciales.password))
+                            .valueChanges();
+  }
+  public obtenerDetallesCong(){
+    return this.firestoredb.collection<Congregacion>('congregaciones', ref => ref.where('cid','==',this.currentUser.congregacion))
                             .valueChanges();
   }
 

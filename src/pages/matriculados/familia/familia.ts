@@ -37,6 +37,7 @@ export class FamiliaPage {
   suscripcion:Subscription;
   formFamilia:FormGroup;
   operacion:string;
+  congreg:string;
   cambioF:boolean;
   @ViewChild(Content) content: Content;
   constructor(private viewCtrl:ViewController,
@@ -56,6 +57,7 @@ export class FamiliaPage {
           congregacion:this.authProvider.currentUser.congregacion,
           tieneintegrantes:false
         };
+        this.authProvider.obtenerDetallesCong().subscribe(cong=>this.congreg=cong[0].nombre);
         this.crearForm();
   }
   crearForm(){

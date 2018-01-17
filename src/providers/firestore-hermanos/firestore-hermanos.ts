@@ -51,28 +51,32 @@ export class FirestoreHermanosProvider {
     this.suscripcionFam=this.obtenerFamiliasConIntegrantes().subscribe(familys=>{
       this.familias=[];
       this.famMap.clear();
-      if (this.suscripcionesFam.length>0){
-        for (let idx in this.suscripcionesFam){
-          this.suscripcionesFam[idx].unsubscribe();
+      if (familys.length>0){
+        if (this.suscripcionesFam.length>0){
+          for (let idx in this.suscripcionesFam){
+            this.suscripcionesFam[idx].unsubscribe();
+          }
+          this.suscripcionesFam=[];
         }
-        this.suscripcionesFam=[];
+          for(let familia of familys){
+              // console.log(`Se suscribe la familia ${familia.apellido}`);
+              let susc=this.obtenerHermanosFamilia(familia.fid).subscribe(integrantes=>{
+              // console.log(`Se obtiene la familia ${familia.apellido}`);
+              let posF=this.famMap.get(familia.fid);
+              if(posF!=undefined){
+                this.familias[posF].integrantes=integrantes;
+              }else{
+                let lengthA=this.familias.push({apellido:familia.apellido,integrantes:integrantes});
+                this.famMap.set(familia.fid,lengthA-1);
+                //console.log(this.famMap.get(familia.fid));
+              }
+              this.hermanosPorFamilia.next(this.familias);
+            });
+            this.suscripcionesFam.push(susc);
+          }
+      }else{
+        this.hermanosPorFamilia.next([]);
       }
-        for(let familia of familys){
-            // console.log(`Se suscribe la familia ${familia.apellido}`);
-            let susc=this.obtenerHermanosFamilia(familia.fid).subscribe(integrantes=>{
-            // console.log(`Se obtiene la familia ${familia.apellido}`);
-            let posF=this.famMap.get(familia.fid);
-            if(posF!=undefined){
-              this.familias[posF].integrantes=integrantes;
-            }else{
-              let lengthA=this.familias.push({apellido:familia.apellido,integrantes:integrantes});
-              this.famMap.set(familia.fid,lengthA-1);
-              //console.log(this.famMap.get(familia.fid));
-            }
-            this.hermanosPorFamilia.next(this.familias);
-          });
-          this.suscripcionesFam.push(susc);
-        }
     });
   }
   verificarExistenciaFamilia(familia:Familia){

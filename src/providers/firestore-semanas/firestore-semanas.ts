@@ -19,13 +19,15 @@ export class FirestoreSemanasProvider {
 
   }
   obtenerSemanas(fechaInicial):Observable<any>{
-    return this.firestoredb.collection('semanas', ref => ref.where('desde','>=',fechaInicial)
+    return this.firestoredb.collection('semanas', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                            .where('desde','>=',fechaInicial)
                                                             .orderBy('desde'))
                             .valueChanges();
   }
   obtenerUltimaSemana(primerLunes:string):Observable<any>{
     return this.firestoredb.collection('semanas', ref =>
-                                                  ref.where('desde','>=',primerLunes)
+                                                  ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                     .where('desde','>=',primerLunes)
                                                      .orderBy('desde','desc')
                                                      .limit(1))
                             .valueChanges();
