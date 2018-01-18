@@ -22,6 +22,14 @@
                    okText="Ok" cancelText="Cancelar">
         <ion-option *ngFor="let hermano of matriculados"
          [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+        <ion-option *ngFor="let hermano of publicadores"
+          [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+        <ion-option *ngFor="let hermano of precursores"
+           [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+        <ion-option *ngFor="let hermano of siervosM"
+            [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+        <ion-option *ngFor="let hermano of ancianos"
+             [value]="hermano.hid">{{hermano.nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="tema.tituloSecundario">
@@ -33,8 +41,12 @@
       <ion-label>Ayudante</ion-label>
       <ion-select formControlName="ayudante"
                    okText="Ok" cancelText="Cancelar">
-        <ion-option *ngFor="let hermano of matriculados"
-         [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                   <ion-option *ngFor="let hermano of matriculados"
+                    [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                   <ion-option *ngFor="let hermano of publicadores"
+                     [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                   <ion-option *ngFor="let hermano of precursores"
+                      [value]="hermano.hid">{{hermano.nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="tema.tieneDuracion">

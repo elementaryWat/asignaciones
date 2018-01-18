@@ -53,21 +53,26 @@ export class AsignacionPage {
           this.obtenido=true;
           this.asignacion.duracion=this.tema.duracion;
           this.formAsignacion.patchValue(this.asignacion);
-        });
-        this.firestoreHProvider.obtenerHermanosMatriculados().subscribe(hermanosS=>{
-          this.matriculados=hermanosS;
-        });
-        this.firestoreHProvider.obtenerHermanosPublicadores().subscribe(hermanosS=>{
-          this.publicadores=hermanosS;
-        });
-        this.firestoreHProvider.obtenerHermanosPrecursores().subscribe(hermanosS=>{
-          this.precursores=hermanosS;
-        });
-        this.firestoreHProvider.obtenerHermanosSiervos().subscribe(hermanosS=>{
-          this.siervosM=hermanosS;
-        });
-        this.firestoreHProvider.obtenerHermanosAncianos().subscribe(hermanosS=>{
-          this.ancianos=hermanosS;
+          if (this.tema.siervosNombrados){
+            if (!this.tema.ancianos){
+              this.firestoreHProvider.obtenerHermanosSiervos().subscribe(hermanosS=>{
+                this.siervosM=hermanosS;
+              });
+            }
+            this.firestoreHProvider.obtenerHermanosAncianos().subscribe(hermanosS=>{
+              this.ancianos=hermanosS;
+            });
+          }else{
+            this.firestoreHProvider.obtenerHermanosMatriculados().subscribe(hermanosS=>{
+              this.matriculados=hermanosS;
+            });
+            this.firestoreHProvider.obtenerHermanosPublicadores().subscribe(hermanosS=>{
+              this.publicadores=hermanosS;
+            });
+            this.firestoreHProvider.obtenerHermanosPrecursores().subscribe(hermanosS=>{
+              this.precursores=hermanosS;
+            });
+          }
         });
   }
 

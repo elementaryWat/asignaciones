@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { FirestoreSemanasProvider } from '../../../providers/firestore-semanas/firestore-semanas';
 import { FirestoreTemasProvider } from '../../../providers/firestore-temas/firestore-temas';
 import {Semana} from '../../../app/interfaces/semana.interface';
@@ -23,11 +23,15 @@ export class SemanaPage {
   temas:Map<string,string>;
   asignaciones:Asignacion[];
   private semana:Semana;
+  loader:Loading;
+  loading:boolean=true;
   obtenido:boolean=false;
   constructor(public navCtrl: NavController,
               private navParams: NavParams,
+              private loadingCtrl:LoadingController,
               private firestoreSProvider:FirestoreSemanasProvider,
               private firestoreTProvider:FirestoreTemasProvider) {
+                this.presentLoading("Cargando asignaciones de la semana...");
                 this.semanaId=navParams.get('semana');
                 this.temas=new Map();
                 firestoreSProvider.obtenerSemana(this.semanaId).subscribe(semanas=>{
@@ -39,8 +43,12 @@ export class SemanaPage {
                     this.temas[tema.tid]=tema.nombre;
                   }
                   firestoreTProvider.obtenerAsignacionesSemana(this.semanaId).subscribe(asignaciones=>{
+                    if (this.loading){
+                      this.loader.dismiss();
+                      this.loading=false;
+                    }
                     this.asignaciones=asignaciones;
-                    console.log(asignaciones);
+                    // console.log(asignaciones);
                   });
                 });
   }
@@ -48,6 +56,12 @@ export class SemanaPage {
       this.navCtrl.push(AsignacionPage,{
         'asignacion':asignacion
       });
+  }
+  presentLoading(mensaje:string) {
+    this.loader = this.loadingCtrl.create({
+      content: mensaje
+    });
+    this.loader.present();
   }
 
   // ionViewDidLoad() {
