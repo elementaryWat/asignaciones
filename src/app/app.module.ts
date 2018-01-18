@@ -12,6 +12,7 @@ import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal'
   import { TemasPage } from '../pages/programa-semanal/temas/temas';
   import { NuevaSemanaPage } from '../pages/programa-semanal/nueva-semana/nueva-semana';
   import {SemanaPage} from '../pages/programa-semanal/semana/semana';
+  import {AsignacionPage} from '../pages/programa-semanal/asignacion/asignacion';
 import { MisAsignacionesPage } from '../pages/mis-asignaciones/mis-asignaciones';
 import { MatriculadosPage } from '../pages/matriculados/matriculados';
   import {FamiliaPage} from '../pages/matriculados/familia/familia';
@@ -53,6 +54,7 @@ const environment = {
       TemasPage,
       NuevaSemanaPage,
       SemanaPage,
+      AsignacionPage,
     MisAsignacionesPage,
     MatriculadosPage,
       FamiliaPage,
@@ -84,6 +86,7 @@ const environment = {
       TemasPage,
       NuevaSemanaPage,
       SemanaPage,
+      AsignacionPage,
     MisAsignacionesPage,
     MatriculadosPage,
       FamiliaPage,

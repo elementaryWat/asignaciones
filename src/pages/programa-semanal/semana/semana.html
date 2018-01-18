@@ -7,13 +7,26 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Semana del {{ fechaDesde | fecha:fechaHasta}} </ion-title>
+    <ion-title *ngIf="obtenido">Semana del {{ semana.desde | fecha:semana.hasta}} </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-item-sliding *ngFor="let asignacion of asignaciones">
+      <ion-item-options side="left">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Borrar
+        </button>
+      </ion-item-options>
+      <button ion-item (click)="pageEditAsignacion(asignacion)">
+        {{ temas[asignacion.tema] }}
+      </button>
+    </ion-item-sliding>
+  </ion-list>
   <ion-fab right bottom>
     <button ion-fab color="primary" ><ion-icon ios="ios-add" md="md-add"></ion-icon></button>
   </ion-fab>

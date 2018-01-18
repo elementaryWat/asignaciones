@@ -77,10 +77,9 @@ export class ProgramaSemanalPage {
   irATemas(){
     this.navCtrl.push(TemasPage);
   }
-  irASemana(fechaDesde:string, fechaHasta:string){
+  irASemana(sid:string){
       this.navCtrl.push(SemanaPage,{
-        fechaDesde:fechaDesde,
-        fechaHasta:fechaHasta
+        'semana':sid
       });
   }
   presentLoading(mensaje:string) {

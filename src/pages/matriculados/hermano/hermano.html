@@ -25,8 +25,8 @@
     <ion-label>Familia</ion-label>
     <ion-select formControlName="familia"
                  okText="Ok" cancelText="Cancelar">
-      <ion-option *ngFor="let familia of familias"
-       [value]="familia.fid">{{familia.apellido}}</ion-option>
+       <ion-option *ngFor="let familia of familias"
+        [value]="familia.fid">{{familia.apellido}}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item>

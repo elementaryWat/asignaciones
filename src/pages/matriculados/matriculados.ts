@@ -128,8 +128,8 @@ eliminarHermano(hermano:Hermano){
        });
       this.toast.present();
     }
-  ionViewWillUnload(){
-    console.log("UnsuscribeFam");
-    this.suscripcionFam.unsubscribe();
-  }
+  // ionViewWillUnload(){
+  //   console.log("UnsuscribeFam");
+  //   this.suscripcionFam.unsubscribe();
+  // }
 }

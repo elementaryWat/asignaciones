@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {Tema} from '../../app/interfaces/tema.interface';
 import {Reunion} from '../../app/interfaces/reunion.interface';
+import {Asignacion} from '../../app/interfaces/asignacion.interface';
 import {ReunionConTemas} from '../../app/interfaces/reunionConTemas.interface';
 import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
@@ -34,9 +35,17 @@ export class FirestoreTemasProvider {
     return this.firestoredb.collection<Tema>('temas', ref=> ref.orderBy('nombre'))
                            .valueChanges();
   }
+  obtenerTema(tid:string){
+    return this.firestoredb.collection<Tema>('temas', ref=> ref.where('tid','==',tid))
+                           .valueChanges();
+  }
   obtenerTemasReunion(reunion:string){
     return this.firestoredb.collection<Tema>('temas', ref=> ref.where('reunion','==',reunion)
                                                                .orderBy('nombre'))
+                           .valueChanges();
+  }
+  obtenerAsignacionesSemana(sid:string){
+    return this.firestoredb.collection<Asignacion>('asignaciones', ref=> ref.where('semana','==',sid))
                            .valueChanges();
   }
   obtenerReuniones(){
@@ -73,8 +82,8 @@ export class FirestoreTemasProvider {
         }
     });
   }
-  crearAsignacion(){
-    
+  crearAsignacion(asignacion:Asignacion){
+    return this.firestoredb.collection<Asignacion>('asignaciones').add(asignacion);
   }
   eliminarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();

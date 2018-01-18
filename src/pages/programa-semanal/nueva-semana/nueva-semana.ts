@@ -12,6 +12,8 @@ import {FirestoreSemanasProvider} from '../../../providers/firestore-semanas/fir
 import * as moment from 'moment';
 import 'moment/locale/es';
 import {Reunion} from '../../../app/interfaces/reunion.interface';
+import {Semana} from '../../../app/interfaces/semana.interface';
+import {Asignacion} from '../../../app/interfaces/asignacion.interface';
 import {ReunionConTemas} from '../../../app/interfaces/reunionConTemas.interface';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
@@ -38,6 +40,7 @@ export class NuevaSemanaPage {
   loader:Loading;
   reuniones:ReunionConTemas[]=[];
   formTemas:FormGroup;
+  asignacion:Asignacion;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl:ViewController,
@@ -49,6 +52,18 @@ export class NuevaSemanaPage {
         this.fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
         // console.log(this.primerLunes);
         // console.log(this.fechaMaxima);
+        this.asignacion={
+          tema:'',
+          semana:'',
+          asignado:'',
+          titulo:'',
+          ayudante:'',
+          duracion:5,
+          leccion:1,
+          podraCumplir:true,
+          observaciones:'',
+          sala:1
+        };
         this.crearForm();
         this.firestoreTProvider.obtenerTemasPorReunion();
         this.firestoreTProvider.temasPorReu.subscribe(reuniones=>{
@@ -68,14 +83,6 @@ export class NuevaSemanaPage {
     // this.formTema.valueChanges.subscribe(()=>{
     //   this.cambioF=JSON.stringify(this.formTema.value)!=JSON.stringify(valorI);
     // });
-  }
-  agregarAsignaciones(){
-    for (let idx in this.formTemas.controls)
-    {
-      if(this.formTemas.controls[idx].value){
-        console.log("Se agregara a "+idx);
-      }
-    }
   }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad NuevaSemanaPage');
@@ -109,7 +116,14 @@ export class NuevaSemanaPage {
       try {
         let docRef=await this.firestoreService.agregarSemana(this.myDate, this.hastaFecha);
         await this.firestoreService.actualizarSid(docRef.id);
-        this.agregarAsignaciones();
+        for (let idx in this.formTemas.controls)
+        {
+          if(this.formTemas.controls[idx].value){
+            this.asignacion.semana=docRef.id;
+            this.asignacion.tema=idx;
+            await this.firestoreTProvider.crearAsignacion(this.asignacion);
+          }
+        }
         context.presentToast("Se ha agregado la semana de manera exitosa");
         context.loader.dismiss();
         context.dismiss();

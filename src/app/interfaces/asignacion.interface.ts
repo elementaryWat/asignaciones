@@ -1,12 +1,12 @@
-import {Hermano} from './hermano.interface';
 export interface Asignacion{
-  tema:string;
-  semana:string;
-  asignado:Hermano;
-  duracion?:number;
-  ayudante?:Hermano;
-  titulo?:string;
-  leccion?:string;
-  observaciones?:string;
-  sala?:number;
+  tema:string,
+  semana:string,
+  asignado:string,
+  podraCumplir:boolean,
+  ayudante:string,
+  duracion:number,
+  titulo:string,
+  leccion:number,
+  observaciones:string,
+  sala:number
 }

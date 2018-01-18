@@ -24,6 +24,10 @@ export class FirestoreSemanasProvider {
                                                             .orderBy('desde'))
                             .valueChanges();
   }
+  obtenerSemana(sid:string):Observable<any>{
+    return this.firestoredb.collection('semanas', ref => ref.where('sid','==',sid))
+                            .valueChanges();
+  }
   obtenerUltimaSemana(primerLunes:string):Observable<any>{
     return this.firestoredb.collection('semanas', ref =>
                                                   ref.where('congregacion','==',this.authProvider.currentUser.congregacion)

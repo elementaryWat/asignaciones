@@ -18,6 +18,7 @@ import 'firebase/firestore';
 */
 @Injectable()
 export class FirestoreHermanosProvider {
+  // hermanosTipo:FamiliaConHermano[]=[];
   dbT:firebase.firestore.Firestore;
   familias:FamiliaConHermano[]=[];
   hermanosPorFamilia:Subject<FamiliaConHermano[]>;
@@ -40,6 +41,37 @@ export class FirestoreHermanosProvider {
                                                                       .orderBy('apellido'))
                             .valueChanges();
   }
+  obtenerHermanosMatriculados(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('publicador','==',false)
+                                                                      .orderBy('nombre'))
+                           .valueChanges();
+  }
+  obtenerHermanosPublicadores(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('publicador','==',true)
+                                                                      .where('precursorRegular','==',false)
+                                                                      .where('siervoMinisterial','==',false)
+                                                                      .where('anciano','==',false)
+                                                                      .orderBy('nombre'))
+                           .valueChanges();
+  }
+  obtenerHermanosPrecursores(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('precursorRegular','==',true)
+                                                                      .where('siervoMinisterial','==',false)
+                                                                      .where('anciano','==',false)
+                                                                      .orderBy('nombre'))
+                           .valueChanges();
+  }
+  obtenerHermanosSiervos(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('siervoMinisterial','==',true)
+                                                                      .orderBy('nombre'))
+                           .valueChanges();
+  }
+  obtenerHermanosAncianos(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('anciano','==',true)
+                                                                      .orderBy('nombre'))
+                           .valueChanges();
+  }
+
   obtenerHermanosFamilia(fid:string){
     return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('familia','==',fid)
                                                                       .orderBy('nombre'))
