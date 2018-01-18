@@ -116,6 +116,8 @@ export class NuevaSemanaPage {
       try {
         let docRef=await this.firestoreService.agregarSemana(this.myDate, this.hastaFecha);
         await this.firestoreService.actualizarSid(docRef.id);
+        context.loader.dismiss();
+        context.presentLoading("Agregando asignaciones...");
         for (let idx in this.formTemas.controls)
         {
           if(this.formTemas.controls[idx].value){

@@ -31,6 +31,7 @@ export class AsignacionPage {
   cantSalas:number;
   lecciones=LECCIONES;
   salas=SALAS;
+  salascong=[];
   asignacion:Asignacion;
   matriculados:Hermano[]=[];
   publicadores:Hermano[]=[];
@@ -38,6 +39,7 @@ export class AsignacionPage {
   siervosM:Hermano[]=[];
   ancianos:Hermano[]=[];
   obtenido:boolean=false;
+  congOb:boolean=false;
   constructor(public navCtrl: NavController,
               private navParams: NavParams,
               private authProvider:AuthProvider,
@@ -46,6 +48,11 @@ export class AsignacionPage {
         this.asignacion=navParams.get("asignacion");
         this.authProvider.obtenerDetallesCong().subscribe(congs=>{
           this.congregacion=congs[0];
+          this.salascong=[];
+          for (let num=0; num<this.congregacion.salas;num++){
+            this.salascong.push(this.salas[num]);
+          }
+          this.congOb=true;
         });
         this.crearForm();
         this.firestoreTProvider.obtenerTema(this.asignacion.tema).subscribe(temas=>{

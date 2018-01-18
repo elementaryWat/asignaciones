@@ -62,11 +62,11 @@
          [value]="leccion.numero">{{leccion.nombre}}</ion-option>
       </ion-select>
   </ion-item>
-  <ion-item *ngIf="tema.tipo=='estudiantil' || tema.reunion=='maestros'">
+  <ion-item *ngIf="(tema.tipo=='estudiantil' || tema.reunion=='maestros') && congOb">
     <ion-label>Sala</ion-label>
     <ion-select formControlName="sala"
                  okText="Ok" cancelText="Cancelar">
-      <ion-option *ngFor="let sala of salas"
+      <ion-option *ngFor="let sala of salascong"
        [value]="sala.numero">{{sala.nombre}}</ion-option>
     </ion-select>
 </ion-item>
