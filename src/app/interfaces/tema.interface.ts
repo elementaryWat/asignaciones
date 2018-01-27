@@ -4,6 +4,7 @@ export interface Tema{
   reunion:string,
   nombre:string,
   ayudante:boolean,
+  soloMan:boolean,
   tituloSecundario:boolean,
   default:boolean,
   observaciones:boolean,

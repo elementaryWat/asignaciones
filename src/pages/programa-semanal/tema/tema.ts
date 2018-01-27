@@ -50,6 +50,7 @@ export class TemaPage {
           tieneDuracion:true,
           duracionFija:true,
           duracion:5,
+          soloMan:false,
           siervosNombrados:false,
           ancianos:false
         };
@@ -80,6 +81,7 @@ export class TemaPage {
       'tieneDuracion':new FormControl(''),
       'duracionFija':new FormControl(''),
       'duracion':new FormControl(''),
+      'soloMan':new FormControl(''),
       'siervosNombrados':new FormControl(''),
       'ancianos':new FormControl('')
     });

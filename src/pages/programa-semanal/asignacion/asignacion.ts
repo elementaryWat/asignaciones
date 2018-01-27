@@ -62,22 +62,49 @@ export class AsignacionPage {
           this.formAsignacion.patchValue(this.asignacion);
           if (this.tema.siervosNombrados){
             if (!this.tema.ancianos){
-              this.firestoreHProvider.obtenerHermanosSiervos().subscribe(hermanosS=>{
+              this.firestoreHProvider.siervosM.subscribe(hermanosS=>{
                 this.siervosM=hermanosS;
               });
             }
-            this.firestoreHProvider.obtenerHermanosAncianos().subscribe(hermanosS=>{
+            this.firestoreHProvider.ancianos.subscribe(hermanosS=>{
               this.ancianos=hermanosS;
             });
           }else{
-            this.firestoreHProvider.obtenerHermanosMatriculados().subscribe(hermanosS=>{
-              this.matriculados=hermanosS;
+            this.firestoreHProvider.matriculados.subscribe(hermanosS=>{
+              this.matriculados=[];
+              if (this.tema.soloMan){
+                for (let hermano of hermanosS){
+                  if (hermano.genero=='masculino'){
+                    this.matriculados.push(hermano);
+                  }
+                }
+              }else{
+                this.matriculados=hermanosS;
+              }
             });
-            this.firestoreHProvider.obtenerHermanosPublicadores().subscribe(hermanosS=>{
-              this.publicadores=hermanosS;
+            this.firestoreHProvider.publicadores.subscribe(hermanosS=>{
+              this.publicadores=[];
+              if (this.tema.soloMan){
+                for (let hermano of hermanosS){
+                  if (hermano.genero=='masculino'){
+                    this.publicadores.push(hermano);
+                  }
+                }
+              }else{
+                this.publicadores=hermanosS;
+              }
             });
-            this.firestoreHProvider.obtenerHermanosPrecursores().subscribe(hermanosS=>{
-              this.precursores=hermanosS;
+            this.firestoreHProvider.precursores.subscribe(hermanosS=>{
+              this.precursores=[];
+              if (this.tema.soloMan){
+                for (let hermano of hermanosS){
+                  if (hermano.genero=='masculino'){
+                    this.precursores.push(hermano);
+                  }
+                }
+              }else{
+                this.precursores=hermanosS;
+              }
             });
           }
         });

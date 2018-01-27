@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subscription} from 'rxjs/Subscription';
 import {AuthProvider} from '../auth/auth';
 import {Familia} from '../../app/interfaces/familia.interface';
@@ -25,10 +26,35 @@ export class FirestoreHermanosProvider {
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
   suscripcionesFam:Subscription[]=[];
+  matriculados:BehaviorSubject<any>;
+  publicadores:BehaviorSubject<any>;
+  precursores:BehaviorSubject<any>;
+  ancianos:BehaviorSubject<any>;
+  siervosM:BehaviorSubject<any>;
   constructor(private firestoredb:AngularFirestore,
               private authProvider:AuthProvider) {
       //Referencia de firestore a usar para transacciones
       this.dbT = firebase.firestore();
+      this.matriculados=new BehaviorSubject([]);
+      this.publicadores=new BehaviorSubject([]);
+      this.precursores=new BehaviorSubject([]);
+      this.siervosM=new BehaviorSubject([]);
+      this.ancianos=new BehaviorSubject([]);
+      this.obtenerHermanosMatriculados().subscribe(hermanosS=>{
+                                    this.matriculados.next(hermanosS);
+                                  });
+      this.obtenerHermanosPublicadores().subscribe(hermanosS=>{
+                                    this.publicadores.next(hermanosS);
+                                  });
+      this.obtenerHermanosPrecursores().subscribe(hermanosS=>{
+                                    this.precursores.next(hermanosS);
+                                  });
+      this.obtenerHermanosSiervos().subscribe(hermanosS=>{
+                                    this.siervosM.next(hermanosS);
+                                  });
+      this.obtenerHermanosAncianos().subscribe(hermanosS=>{
+                                    this.ancianos.next(hermanosS);
+                                  });
   }
   obtenerFamilias(){
     return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)

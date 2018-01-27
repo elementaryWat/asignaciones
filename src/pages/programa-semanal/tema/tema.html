@@ -65,6 +65,10 @@
       <ion-input formControlName="duracion"
        type="number"></ion-input>
     </ion-item>
+    <ion-item *ngIf="formTema.controls['tipo'].value=='estudiantil'">
+      <ion-label>Solo hermanos</ion-label>
+      <ion-toggle formControlName="soloMan"></ion-toggle>
+    </ion-item>
     <ion-item *ngIf="formTema.controls['tipo'].value=='otra'">>
       <ion-label>Solo siervos nombrados</ion-label>
       <ion-toggle formControlName="siervosNombrados"></ion-toggle>
