@@ -42,11 +42,11 @@
       <ion-select formControlName="ayudante"
                    okText="Ok" cancelText="Cancelar">
                    <ion-option *ngFor="let hermano of matriculados"
-                    [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                    [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
                    <ion-option *ngFor="let hermano of publicadores"
-                     [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                     [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
                    <ion-option *ngFor="let hermano of precursores"
-                      [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+                      [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="tema.tieneDuracion">
