@@ -37,8 +37,6 @@
       </ion-item>
     </ion-item-group>
     <br>
-    <button *ngIf="operacion=='create'" [disabled]="formTema.invalid"
-     ion-button outline round block type="submit">Agregar</button>
   </form>
-  <button type="button" ion-button block outline round (click)="agregarSemana(this)">Agregar semana</button>
+  <button *ngIf="!loading" type="button" ion-button block outline round (click)="agregarSemana(this)">Agregar semana</button>
 </ion-content>

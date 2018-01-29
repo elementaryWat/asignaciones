@@ -6,6 +6,9 @@ import {Asignacion} from '../../app/interfaces/asignacion.interface';
 import {ReunionConTemas} from '../../app/interfaces/reunionConTemas.interface';
 import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
+
+import firebase from 'firebase';
+import 'firebase/firestore';
 /*
   Generated class for the TemasProvider provider.
 
@@ -14,13 +17,14 @@ import {Subscription} from 'rxjs/Subscription';
 */
 @Injectable()
 export class FirestoreTemasProvider {
+  dbT:firebase.firestore.Firestore;
   reuMap:Map<string,number>;
   temasPorReu:Subject<any>;
   suscripcionReu:Subscription;
   suscripcionesTemas:Subscription[]=[];
   reuniones:ReunionConTemas[]=[];
   constructor(private firestoredb:AngularFirestore) {
-
+    this.dbT = firebase.firestore();
   }
   agregarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').add(tema);
@@ -30,6 +34,9 @@ export class FirestoreTemasProvider {
   }
   actualizarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').doc(tema.tid).update(tema);
+  }
+  eliminarTema(tema:Tema):Promise<any>{
+    return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();
   }
   obtenerTemas(){
     return this.firestoredb.collection<Tema>('temas', ref=> ref.orderBy('nombre'))
@@ -83,9 +90,14 @@ export class FirestoreTemasProvider {
     });
   }
   crearAsignacion(asignacion:Asignacion){
-    return this.firestoredb.collection<Asignacion>('asignaciones').add(asignacion);
+    let newAsignacionRef = this.dbT.collection("asignaciones").doc();
+    asignacion.aid=newAsignacionRef.id;
+    return newAsignacionRef.set(asignacion);
   }
-  eliminarTema(tema:Tema):Promise<any>{
-    return this.firestoredb.collection<Tema>('temas').doc(tema.tid).delete();
+  actualizarAsignacion(asignacion:Asignacion):Promise<any>{
+    return this.firestoredb.collection<Asignacion>('asignaciones').doc(asignacion.aid).update(asignacion);
+  }
+  eliminarAsignacion(asignacion:Asignacion):Promise<any>{
+    return this.firestoredb.collection<Asignacion>('asignaciones').doc(asignacion.aid).delete();
   }
 }

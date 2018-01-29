@@ -11,5 +11,6 @@ export interface Hermano{
   fechaBautismo?:string,
   precursorRegular?:boolean,
   siervoMinisterial?:boolean,
-  anciano?:boolean
+  anciano?:boolean,
+  congregacion:string
 }

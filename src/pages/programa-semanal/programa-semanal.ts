@@ -10,11 +10,13 @@ import { IonicPage,
 import { ModalController } from 'ionic-angular';
 import { NuevaSemanaPage } from './nueva-semana/nueva-semana';
 import { FirestoreSemanasProvider } from '../../providers/firestore-semanas/firestore-semanas';
+import { FirestoreTemasProvider } from '../../providers/firestore-temas/firestore-temas';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
 import 'moment/locale/es';
 import {Semana} from '../../app/interfaces/semana.interface';
+import {Asignacion} from '../../app/interfaces/asignacion.interface';
 import {SemanaPage} from './semana/semana';
 import {TemasPage} from './temas/temas';
 /**
@@ -42,7 +44,8 @@ export class ProgramaSemanalPage {
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController,
               private alertCtrl:AlertController,
-              private firestoreService: FirestoreSemanasProvider) {
+              private firestoreService: FirestoreSemanasProvider,
+              private firestoreTProvider: FirestoreTemasProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
       this.presentLoading("Cargando semanas...");
       firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
@@ -99,12 +102,29 @@ export class ProgramaSemanalPage {
        {
          text: 'Si',
          handler: () => {
+          this.firestoreTProvider.obtenerAsignacionesSemana(semana.sid).subscribe(asignaciones=>{
+
+          })
           this.eliminarSemana(semana);
          }
        }
      ]
    });
    confirm.present();
+ }
+ async eliminarAsignacionesSemana(asignaciones:Asignacion[],semana:Semana){
+   this.presentLoading("Eliminando asignaciones de la semana...");
+   try{
+     for (let asignacion of asignaciones){
+       await this.firestoreTProvider.eliminarAsignacion(asignacion);
+     }
+     this.loader.dismiss();
+     this.eliminarSemana(semana);
+   }
+   catch(err){
+     this.loader.dismiss();
+     this.presentToast("Ha ocurrido un error al eliminar las asignaciones de la semana: "+err);
+   }
  }
  async eliminarSemana(semana:Semana){
    this.presentLoading("Eliminando semana...");

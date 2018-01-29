@@ -7,6 +7,7 @@ import { IonicPage,
          Loading,
          ToastController,
          Toast } from 'ionic-angular';
+import {AuthProvider} from '../../../providers/auth/auth';
 import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {Hermano} from '../../../app/interfaces/hermano.interface';
 import {Familia} from '../../../app/interfaces/familia.interface';
@@ -37,6 +38,7 @@ export class HermanoPage {
   constructor(private navParams:NavParams,
               private viewCtrl:ViewController,
               private firestoreHProvider:FirestoreHermanosProvider,
+              private authProvider:AuthProvider,
               private loadingCtrl:LoadingController,
               private toastCtrl:ToastController) {
       this.operacion=navParams.get("operacion");
@@ -54,7 +56,8 @@ export class HermanoPage {
               bautizado:true,
               precursorRegular:false,
               siervoMinisterial:false,
-              anciano:false
+              anciano:false,
+              congregacion:this.authProvider.currentUser.congregacion
             };
             break;
           case 'update':
@@ -79,6 +82,7 @@ export class HermanoPage {
       'precursorRegular':new FormControl(''),
       'siervoMinisterial':new FormControl(''),
       'anciano':new FormControl(''),
+      'congregacion':new FormControl(''),
     });
     this.formHermano.patchValue(this.hermano);
     this.valorI=this.formHermano.value;
@@ -126,19 +130,6 @@ export class HermanoPage {
         if(hermanos.length==0){
             this.firestoreHProvider.agregarHermano(this.formHermano.value).then((docRef)=>{
               this.firestoreHProvider.configHermanoyFamilia(docRef.id,this.formHermano.value.familia).then(()=>{
-                this.hermano={
-                  nombre:'',
-                  userId:'',
-                  genero:'',
-                  fechaNacimiento:'',
-                  telefono:'',
-                  familia:'',
-                  publicador:true,
-                  bautizado:true,
-                  precursorRegular:false,
-                  siervoMinisterial:false,
-                  anciano:false
-                };
                 this.formHermano.patchValue(this.hermano);
                 this.loader.dismiss();
                 this.presentToast("Se agrego el hermano de manera exitosa");

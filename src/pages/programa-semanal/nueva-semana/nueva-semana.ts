@@ -38,6 +38,7 @@ export class NuevaSemanaPage {
   fechaMaxima:string;
   toast:Toast;
   loader:Loading;
+  loading:boolean=true;
   reuniones:ReunionConTemas[]=[];
   formTemas:FormGroup;
   asignacion:Asignacion;
@@ -50,6 +51,7 @@ export class NuevaSemanaPage {
               private firestoreTProvider:FirestoreTemasProvider) {
         this.primerLunes=moment().day(1).format("YYYY-MM-DD");
         this.fechaMaxima=moment().day(1).add(8, 'weeks').format("YYYY-MM-DD");
+        this.presentLoading("Cargando lista de temas...");
         // console.log(this.primerLunes);
         // console.log(this.fechaMaxima);
         this.asignacion={
@@ -73,6 +75,10 @@ export class NuevaSemanaPage {
             for (let tema of this.reuniones[idx].temas){
               this.formTemas.addControl(tema.tid,new FormControl(tema.default));
             }
+          }
+          if (this.loading){
+            this.loader.dismiss();
+            this.loading=false;
           }
         })
   }

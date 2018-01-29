@@ -26,6 +26,8 @@ export class FirestoreHermanosProvider {
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
   suscripcionesFam:Subscription[]=[];
+  hermanos:BehaviorSubject<any>;
+  lfamilias:BehaviorSubject<any>;
   matriculados:BehaviorSubject<any>;
   publicadores:BehaviorSubject<any>;
   precursores:BehaviorSubject<any>;
@@ -35,11 +37,19 @@ export class FirestoreHermanosProvider {
               private authProvider:AuthProvider) {
       //Referencia de firestore a usar para transacciones
       this.dbT = firebase.firestore();
+      this.lfamilias=new BehaviorSubject([]);
+      this.hermanos=new BehaviorSubject([]);
       this.matriculados=new BehaviorSubject([]);
       this.publicadores=new BehaviorSubject([]);
       this.precursores=new BehaviorSubject([]);
       this.siervosM=new BehaviorSubject([]);
       this.ancianos=new BehaviorSubject([]);
+      this.obtenerFamilias().subscribe(familias=>{
+                                    this.lfamilias.next(familias);
+                                  });
+      this.obtenerHermanos().subscribe(hermanosS=>{
+                                    this.hermanos.next(hermanosS);
+                                  });
       this.obtenerHermanosMatriculados().subscribe(hermanosS=>{
                                     this.matriculados.next(hermanosS);
                                   });
@@ -56,24 +66,31 @@ export class FirestoreHermanosProvider {
                                     this.ancianos.next(hermanosS);
                                   });
   }
+  obtenerHermanos(){
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion))
+                           .valueChanges();
+  }
   obtenerFamilias(){
     return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
                                                             .orderBy('apellido'))
                             .valueChanges();
   }
   obtenerFamiliasConIntegrantes(){
-    return this.firestoredb.collection<Familia>('familias', ref => ref.where('tieneintegrantes','==',true)
+    return this.firestoredb.collection<Familia>('familias', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('tieneintegrantes','==',true)
                                                                       .where('congregacion','==',this.authProvider.currentUser.congregacion)
                                                                       .orderBy('apellido'))
                             .valueChanges();
   }
   obtenerHermanosMatriculados(){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('publicador','==',false)
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('publicador','==',false)
                                                                       .orderBy('nombre'))
                            .valueChanges();
   }
   obtenerHermanosPublicadores(){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('publicador','==',true)
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('publicador','==',true)
                                                                       .where('precursorRegular','==',false)
                                                                       .where('siervoMinisterial','==',false)
                                                                       .where('anciano','==',false)
@@ -81,19 +98,22 @@ export class FirestoreHermanosProvider {
                            .valueChanges();
   }
   obtenerHermanosPrecursores(){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('precursorRegular','==',true)
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('precursorRegular','==',true)
                                                                       .where('siervoMinisterial','==',false)
                                                                       .where('anciano','==',false)
                                                                       .orderBy('nombre'))
                            .valueChanges();
   }
   obtenerHermanosSiervos(){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('siervoMinisterial','==',true)
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('siervoMinisterial','==',true)
                                                                       .orderBy('nombre'))
                            .valueChanges();
   }
   obtenerHermanosAncianos(){
-    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('anciano','==',true)
+    return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
+                                                                      .where('anciano','==',true)
                                                                       .orderBy('nombre'))
                            .valueChanges();
   }

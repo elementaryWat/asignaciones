@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage,
+          NavController,
+          NavParams,
+          LoadingController,
+          Loading,
+          ToastController,
+          Toast} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {FirestoreHermanosProvider} from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {FirestoreTemasProvider} from '../../../providers/firestore-temas/firestore-temas';
@@ -33,6 +39,7 @@ export class AsignacionPage {
   salas=SALAS;
   salascong=[];
   asignacion:Asignacion;
+  familias:Map<string,string>;
   matriculados:Hermano[]=[];
   publicadores:Hermano[]=[];
   precursores:Hermano[]=[];
@@ -40,12 +47,26 @@ export class AsignacionPage {
   ancianos:Hermano[]=[];
   obtenido:boolean=false;
   congOb:boolean=false;
+  operacion:string;
+  loader:Loading;
+  toast:Toast;
+  cambioF:boolean=false;
   constructor(public navCtrl: NavController,
               private navParams: NavParams,
               private authProvider:AuthProvider,
+              private toastCtrl:ToastController,
+              private loadingCtrl:LoadingController,
               private firestoreTProvider:FirestoreTemasProvider,
               private firestoreHProvider:FirestoreHermanosProvider) {
+
+        this.operacion=navParams.get("operacion");
         this.asignacion=navParams.get("asignacion");
+        this.familias=new Map();
+        this.firestoreHProvider.lfamilias.subscribe(familias=>{
+          for (let familia of familias){
+            this.familias[familia.fid]=familia.apellido;
+          }
+        });
         this.authProvider.obtenerDetallesCong().subscribe(congs=>{
           this.congregacion=congs[0];
           this.salascong=[];
@@ -115,6 +136,7 @@ export class AsignacionPage {
   // }
   crearForm(){
     this.formAsignacion=new FormGroup({
+      'aid':new FormControl('',Validators.required),
       'asignado':new FormControl('',Validators.required),
       'semana':new FormControl(''),
       'tema':new FormControl(''),
@@ -126,10 +148,10 @@ export class AsignacionPage {
       'observaciones':new FormControl(''),
       'sala':new FormControl(''),
     });
-    // this.valorI=this.formAsignacion.value;
-    // this.formAsignacion.valueChanges.subscribe(()=>{
-    //   this.cambioF=JSON.stringify(this.formAsignacion.value)!=JSON.stringify(this.valorI);
-    // });
+    this.valorI=this.formAsignacion.value;
+    this.formAsignacion.valueChanges.subscribe(()=>{
+      this.cambioF=JSON.stringify(this.formAsignacion.value)!=JSON.stringify(this.valorI);
+    });
     // this.formAsignacion.controls['genero'].valueChanges.subscribe(value=>{
     //   if(value=='femenino'){
     //     this.formAsignacion.controls['siervoMinisterial'].setValue(false);
@@ -137,8 +159,39 @@ export class AsignacionPage {
     //   }
     // });
   }
-  agregarAsignacion(){
-
+  actualizarAsignacion(){
+    this.presentLoading("Actualizando asignacion...");
+    this.firestoreTProvider.actualizarAsignacion(this.formAsignacion.value).then(()=>{
+                              this.valorI=this.formAsignacion.value;
+                              this.cambioF=false;
+                              this.loader.dismiss();
+                              this.presentToast("Se actualizó la asignacion de manera exitosa");
+                            }).catch((error)=>{
+                              this.loader.dismiss();
+                              this.presentToast("Ha ocurrido un error al actualizar: "+error);
+                            });
   }
-
+  presentToast(mensaje:string) {
+    if (this.toast){
+      this.toast.dismiss();
+    }
+    this.toast = this.toastCtrl.create({
+        message: mensaje,
+        position: 'bottom',
+        showCloseButton:true,
+        closeButtonText:"OK"
+      });
+     this.toast.present();
+   }
+  presentLoading(mensaje:string) {
+    this.loader = this.loadingCtrl.create({
+      content: mensaje
+    });
+    this.loader.present();
+  }
+  ionViewDidLeave(){
+    if (this.toast){
+      this.toast.dismiss();
+    }
+  }
 }

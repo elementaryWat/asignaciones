@@ -21,15 +21,15 @@
       <ion-select formControlName="asignado"
                    okText="Ok" cancelText="Cancelar">
         <ion-option *ngFor="let hermano of matriculados"
-         [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+         [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
         <ion-option *ngFor="let hermano of publicadores"
-          [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+          [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
         <ion-option *ngFor="let hermano of precursores"
-           [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+           [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
         <ion-option *ngFor="let hermano of siervosM"
-            [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+            [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
         <ion-option *ngFor="let hermano of ancianos"
-             [value]="hermano.hid">{{hermano.nombre}}</ion-option>
+             [value]="hermano.hid">{{hermano.nombre}} {{familias[hermano.familia]}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="tema.tituloSecundario">
@@ -71,7 +71,7 @@
     </ion-select>
 </ion-item>
     <br>
-    <button *ngIf="operacion=='create'" [disabled]="!formAsignacion.valid"
-     ion-button outline round block type="submit">Agregar</button>
+    <button (click)=actualizarAsignacion() *ngIf="operacion=='update'" [disabled]="!formAsignacion.valid"
+     ion-button outline round block type="submit">Guardar</button>
   </form>
 </ion-content>

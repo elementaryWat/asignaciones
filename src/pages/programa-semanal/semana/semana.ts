@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { FirestoreSemanasProvider } from '../../../providers/firestore-semanas/firestore-semanas';
 import { FirestoreTemasProvider } from '../../../providers/firestore-temas/firestore-temas';
+import { FirestoreHermanosProvider } from '../../../providers/firestore-hermanos/firestore-hermanos';
 import {Semana} from '../../../app/interfaces/semana.interface';
 import {Asignacion} from '../../../app/interfaces/asignacion.interface';
 import {AsignacionPage} from '../asignacion/asignacion';
@@ -21,7 +22,9 @@ import {AsignacionPage} from '../asignacion/asignacion';
 export class SemanaPage {
   private semanaId:string;
   temas:Map<string,string>;
-  asignaciones:Asignacion[];
+  asignaciones:Asignacion[]=[];
+  familias:Map<string,string>;
+  hermanos:Map<string,string>;
   private semana:Semana;
   loader:Loading;
   loading:boolean=true;
@@ -30,8 +33,22 @@ export class SemanaPage {
               private navParams: NavParams,
               private loadingCtrl:LoadingController,
               private firestoreSProvider:FirestoreSemanasProvider,
+              private firestoreHProvider:FirestoreHermanosProvider,
               private firestoreTProvider:FirestoreTemasProvider) {
                 this.presentLoading("Cargando asignaciones de la semana...");
+                this.familias=new Map();
+                this.hermanos=new Map();
+                this.firestoreHProvider.lfamilias.subscribe(familias=>{
+                  for (let familia of familias){
+                    this.familias[familia.fid]=familia.apellido;
+                  }
+                  this.firestoreHProvider.hermanos.subscribe(hermanos=>{
+                    for (let hermano of hermanos){
+                      this.hermanos[hermano.hid]=`${hermano.nombre} ${this.familias[hermano.familia]}`;
+                    }
+                  });
+                });
+
                 this.semanaId=navParams.get('semana');
                 this.temas=new Map();
                 firestoreSProvider.obtenerSemana(this.semanaId).subscribe(semanas=>{
@@ -54,6 +71,7 @@ export class SemanaPage {
   }
   pageEditAsignacion(asignacion:Asignacion) {
       this.navCtrl.push(AsignacionPage,{
+        'operacion':'update',
         'asignacion':asignacion
       });
   }
