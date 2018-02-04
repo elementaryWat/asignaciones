@@ -53,7 +53,8 @@ export class UsuarioPage {
         let idUser=navParams.get('usuario');
         this.crearForm();
         let susc=this.firestoreHProvider.obtenerUsuario(idUser).subscribe(usuario=>{
-          this.setValueForm(usuario);
+          this.userN=usuario;
+          this.setValueForm(this.userN);
           susc.unsubscribe();
         });
         break;
