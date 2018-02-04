@@ -7,6 +7,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {AuthProvider} from '../auth/auth';
 import {Familia} from '../../app/interfaces/familia.interface';
 import {Hermano} from '../../app/interfaces/hermano.interface';
+import {Usuario} from '../../app/clases/User.class';
 import {FamiliaConHermano} from '../../app/interfaces/familiaConHermano.interface';
 
 import firebase from 'firebase';
@@ -26,6 +27,7 @@ export class FirestoreHermanosProvider {
   famMap:Map<string,number>;
   suscripcionFam:Subscription;
   suscripcionesFam:Subscription[]=[];
+  usuarios:BehaviorSubject<any>;
   hermanos:BehaviorSubject<any>;
   lfamilias:BehaviorSubject<any>;
   matriculados:BehaviorSubject<any>;
@@ -38,12 +40,16 @@ export class FirestoreHermanosProvider {
       //Referencia de firestore a usar para transacciones
       this.dbT = firebase.firestore();
       this.lfamilias=new BehaviorSubject([]);
+      this.usuarios=new BehaviorSubject([]);
       this.hermanos=new BehaviorSubject([]);
       this.matriculados=new BehaviorSubject([]);
       this.publicadores=new BehaviorSubject([]);
       this.precursores=new BehaviorSubject([]);
       this.siervosM=new BehaviorSubject([]);
       this.ancianos=new BehaviorSubject([]);
+      this.obtenerUsuarios().subscribe(usuarios=>{
+                                    this.usuarios.next(usuarios);
+                                  });
       this.obtenerFamilias().subscribe(familias=>{
                                     this.lfamilias.next(familias);
                                   });
@@ -65,6 +71,21 @@ export class FirestoreHermanosProvider {
       this.obtenerHermanosAncianos().subscribe(hermanosS=>{
                                     this.ancianos.next(hermanosS);
                                   });
+  }
+  agregarUsuario(usuario:Usuario){
+    let nUser = this.dbT.collection("usuarios").doc();
+    usuario.uid=nUser.id;
+    return nUser.set(usuario);
+  }
+  actualizarUsuario(usuario:Usuario){
+    return this.firestoredb.collection<Usuario>('usuarios').doc(usuario.uid).update(usuario);
+  }
+  obtenerUsuarios(){
+    return this.firestoredb.collection<Usuario>('usuarios', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion))
+                           .valueChanges();
+  }
+  obtenerUsuario(uid:string){
+    return this.firestoredb.collection('usuarios').doc(uid).valueChanges();
   }
   obtenerHermanos(){
     return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion))

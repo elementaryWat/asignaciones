@@ -7,7 +7,8 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Nuevo usuario</ion-title>
+    <ion-title *ngIf="operacion=='create'">Nuevo usuario</ion-title>
+    <ion-title *ngIf="operacion=='update'">Usuario de {{formUsuario.controls['nombre'].value}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,7 +23,7 @@
     </ion-item>
     <ion-item>
       <ion-label floating>Contraseña</ion-label>
-      <ion-input formControlName="password"
+      <ion-input formControlName="contraseña"
        type="text"></ion-input>
     </ion-item>
     <ion-item>
@@ -33,7 +34,7 @@
     <button *ngIf="operacion=='create'" [disabled]="!formUsuario.valid"
      ion-button outline round block type="submit">Agregar usuario</button>
   </form>
-  <!-- <ion-fab right bottom *ngIf="operacion=='update' && cambioF && formHermano.dirty && formHermano.valid">
-    <button ion-fab (click)="actualizarHermano()" type="button"> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
-  </ion-fab> -->
+  <ion-fab right bottom *ngIf="operacion=='update' && cambioF && formUsuario.dirty && formUsuario.valid">
+    <button ion-fab (click)="editarUsuario()" type="button"> <ion-icon ios="ios-create" md="md-create"></ion-icon></button>
+  </ion-fab>
 </ion-content>

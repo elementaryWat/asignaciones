@@ -29,6 +29,7 @@ import {Hermano} from '../../app/interfaces/hermano.interface';
 export class MatriculadosPage {
   familias:FamiliaConHermano[]=[];
   famMap:Map<string,number>;
+  usuarios:Map<string,string>;
   suscripcionFam:Subscription;
   toast:Toast;
   loader:Loading;
@@ -40,6 +41,12 @@ export class MatriculadosPage {
               private toastCtrl:ToastController,
               private alertCtrl:AlertController) {
       this.presentLoading("Cargando hermanos..");
+      this.usuarios=new Map();
+      this.firestoreHProvider.usuarios.subscribe(usuarios=>{
+        for (let usuario of usuarios){
+          this.usuarios[usuario.hid]=usuario.uid;
+        }
+      });
       this.firestoreHProvider.obtenerHermanosPorFamilia();
       this.firestoreHProvider.hermanosPorFamilia.subscribe(familias=>{
         if (this.loading){
@@ -59,11 +66,18 @@ export class MatriculadosPage {
         'hermano':hermano
       });
   }
-  pageEditUsuario(hermano:Hermano) {
-      this.navCtrl.push(UsuarioPage,{
-        'operacion':'create',
-        'hermano':hermano
-      });
+  pageEditUsuario(hermano:Hermano, usuario?:string) {
+      if (usuario){
+        this.navCtrl.push(UsuarioPage,{
+          'operacion':'update',
+          'usuario':usuario
+        });
+      }else{
+        this.navCtrl.push(UsuarioPage,{
+          'operacion':'create',
+          'hermano':hermano
+        });
+      }
   }
   presentModalHermano() {
       let modal = this.modalCtrl.create(HermanoPage,{
