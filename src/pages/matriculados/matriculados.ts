@@ -41,8 +41,8 @@ export class MatriculadosPage {
               private toastCtrl:ToastController,
               private alertCtrl:AlertController) {
       this.presentLoading("Cargando hermanos..");
-      this.usuarios=new Map();
       this.firestoreHProvider.usuarios.subscribe(usuarios=>{
+        this.usuarios=new Map();
         for (let usuario of usuarios){
           this.usuarios[usuario.hid]=usuario.uid;
         }
