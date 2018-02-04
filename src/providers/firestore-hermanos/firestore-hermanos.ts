@@ -85,7 +85,7 @@ export class FirestoreHermanosProvider {
                            .valueChanges();
   }
   obtenerUsuario(uid:string){
-    return this.firestoredb.collection('usuarios').doc(uid).valueChanges();
+    return this.firestoredb.collection<Usuario>('usuarios', ref => ref.where('uid','==',uid)).valueChanges();
   }
   obtenerHermanos(){
     return this.firestoredb.collection<Hermano>('hermanos', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion))
