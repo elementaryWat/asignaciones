@@ -9,6 +9,7 @@ import { IonicPage,
          Toast,} from 'ionic-angular';
 import {FamiliaPage} from './familia/familia';
 import {HermanoPage} from './hermano/hermano';
+import {UsuarioPage} from '../usuario/usuario';
 import {FamiliaConHermano} from '../../app/interfaces/familiaConHermano.interface';
 import {FirestoreHermanosProvider} from '../../providers/firestore-hermanos/firestore-hermanos';
 import {Subscription} from 'rxjs/Subscription';
@@ -55,6 +56,12 @@ export class MatriculadosPage {
   pageEditHermano(hermano:Hermano) {
       this.navCtrl.push(HermanoPage,{
         'operacion':'update',
+        'hermano':hermano
+      });
+  }
+  pageEditUsuario(hermano:Hermano) {
+      this.navCtrl.push(UsuarioPage,{
+        'operacion':'create',
         'hermano':hermano
       });
   }

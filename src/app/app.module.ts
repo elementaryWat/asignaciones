@@ -7,6 +7,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 //Pages
 import {LoginPage} from '../pages/login/login';
+import {UsuarioPage} from '../pages/usuario/usuario';
 import { ProgramaSemanalPage } from '../pages/programa-semanal/programa-semanal';
   import { TemaPage } from '../pages/programa-semanal/tema/tema';
   import { TemasPage } from '../pages/programa-semanal/temas/temas';
@@ -49,6 +50,7 @@ const environment = {
   declarations: [
     MyApp,
     LoginPage,
+    UsuarioPage,
     ProgramaSemanalPage,
       TemaPage,
       TemasPage,
@@ -81,6 +83,7 @@ const environment = {
   entryComponents: [
     MyApp,
     LoginPage,
+    UsuarioPage,
     ProgramaSemanalPage,
       TemaPage,
       TemasPage,
