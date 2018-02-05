@@ -55,7 +55,7 @@ export class SemanaPage {
                   this.semana=semanas[0];
                   this.obtenido=true;
                 });
-                firestoreTProvider.obtenerTemas().subscribe(temas=>{
+                firestoreTProvider.temas.subscribe(temas=>{
                   for (let tema of temas){
                     this.temas[tema.tid]=tema.nombre;
                   }

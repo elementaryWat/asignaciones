@@ -48,7 +48,7 @@ export class ProgramaSemanalPage {
               private firestoreTProvider: FirestoreTemasProvider) {
       this.fechaLimInf=moment().day(1).format("YYYY-MM-DD");
       this.presentLoading("Cargando semanas...");
-      firestoreService.obtenerSemanas(this.fechaLimInf).subscribe(semanas=>{
+      firestoreService.semanas.subscribe(semanas=>{
         if (this.loading){
           this.loader.dismiss();
           this.loading=false;

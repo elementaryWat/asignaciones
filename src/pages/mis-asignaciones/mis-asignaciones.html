@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-  <ion-grid class="text-center caja-vacia">
+  <ion-grid class="text-center caja-vacia" *ngIf="!loading && asignaciones.length==0">
     <ion-row>
       <ion-col  align="center">
         <ion-icon ios="ios-paper" md="md-paper" class="icono-grande"></ion-icon>
@@ -22,4 +22,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-list>
+    <ion-item *ngFor="let asignacion of asignaciones">
+      <h2>{{ temas[asignacion.tema] }}</h2>
+      <h3>{{asignacion.titulo}}</h3>
+      <!-- <p>{{semanas[asignacion.semana].desde}}</p> -->
+      <!-- <p>{{hermanos[asignacion.asignado]}}</p> -->
+    </ion-item>
+  </ion-list>
 </ion-content>

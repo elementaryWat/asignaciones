@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {Semana} from '../../app/interfaces/semana.interface';
 import {AuthProvider} from '../auth/auth';
-
+import * as moment from 'moment';
+import 'moment/locale/es';
 
 /*
   Generated class for the FirestoreProvider provider.
@@ -13,14 +15,20 @@ import {AuthProvider} from '../auth/auth';
 */
 @Injectable()
 export class FirestoreSemanasProvider {
+  semanas:BehaviorSubject<any>;
+  fechaI:any;
   constructor(private firestoredb:AngularFirestore,
               private authProvider:AuthProvider) {
     //console.log('Hello FirestoreProvider Provider');
-
+    this.semanas=new BehaviorSubject([]);
+    this.fechaI=moment().day(1).format("YYYY-MM-DD");
+    this.obtenerSemanas().subscribe(semanas=>{
+      this.semanas.next(semanas);
+    });
   }
-  obtenerSemanas(fechaInicial):Observable<any>{
+  obtenerSemanas():Observable<any>{
     return this.firestoredb.collection('semanas', ref => ref.where('congregacion','==',this.authProvider.currentUser.congregacion)
-                                                            .where('desde','>=',fechaInicial)
+                                                            .where('desde','>=',this.fechaI)
                                                             .orderBy('desde'))
                             .valueChanges();
   }

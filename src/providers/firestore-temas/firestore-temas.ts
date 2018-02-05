@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {Tema} from '../../app/interfaces/tema.interface';
+import {Hermano} from '../../app/interfaces/hermano.interface';
 import {Reunion} from '../../app/interfaces/reunion.interface';
 import {Asignacion} from '../../app/interfaces/asignacion.interface';
 import {ReunionConTemas} from '../../app/interfaces/reunionConTemas.interface';
 import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subscription} from 'rxjs/Subscription';
 
 import firebase from 'firebase';
@@ -19,12 +21,17 @@ import 'firebase/firestore';
 export class FirestoreTemasProvider {
   dbT:firebase.firestore.Firestore;
   reuMap:Map<string,number>;
+  temas:BehaviorSubject<any>;
   temasPorReu:Subject<any>;
   suscripcionReu:Subscription;
   suscripcionesTemas:Subscription[]=[];
   reuniones:ReunionConTemas[]=[];
   constructor(private firestoredb:AngularFirestore) {
     this.dbT = firebase.firestore();
+    this.temas=new BehaviorSubject([]);
+    this.obtenerTemas().subscribe(temas=>{
+      this.temas.next(temas);
+    });
   }
   agregarTema(tema:Tema):Promise<any>{
     return this.firestoredb.collection<Tema>('temas').add(tema);
@@ -53,6 +60,11 @@ export class FirestoreTemasProvider {
   }
   obtenerAsignacionesSemana(sid:string){
     return this.firestoredb.collection<Asignacion>('asignaciones', ref=> ref.where('semana','==',sid))
+                           .valueChanges();
+  }
+  obtenerAsignacionesHermanoActuales(hid:string){
+    return this.firestoredb.collection<Asignacion>('asignaciones', ref=> ref.where('asignado','==',hid)
+                                                                            .where('asignado','==',hid)  )
                            .valueChanges();
   }
   obtenerReuniones(){
