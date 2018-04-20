@@ -3,8 +3,8 @@
 Con esta app podemos gestionar las asignaciones de temas en las reuniones de semana
 
 ## PASEO POR LA APP
-En primer lugar iniciamos sesion en la app
-![
+
+![En primer lugar iniciamos sesion en la app
 ](https://lh3.googleusercontent.com/68-5cAc9sik-POPp0MlASTDHBYmjWAfy22sLMCx35Nl9wjAwxOyhlkVWcoRk-h0aZw8WcDb5Fa0 "LOGIN")
 ![
 ](https://lh3.googleusercontent.com/vhO8Mu8OiFK79WqDELSdwqXm7WlEGmO9OmSXinsV3OYzd9HZDgBuzQ87WoZsZGIHPCjGZedVTa0 "LOGIN")
